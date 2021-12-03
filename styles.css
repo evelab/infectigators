@@ -30,17 +30,43 @@ body {
   align-items: center;
   width: 76%;
   height: 100vh;
-  align-content: middle;
+  /* align-content: middle; */
+}
+
+#gameBoard {
+  width: 100%;
+  height: auto;
+  background-color: rgb(200, 200, 200);
+  border-radius: 6px;
+}
+
+#columnHeaders {
+  display: flex;
+  /* flex-wrap: wrap; */
+  position: relative;
+  width: 100%;
+  height: auto;
+  justify-content: center;
+}
+#columnHeaders .headerText {
+  position: relative;
+  padding: 12px 4px;
+  margin: 0;
+  text-align: center;
+  font-size: 110%;
 }
 
 #grid {
-  width: 96%;
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
+  width: 100%;
   height: auto;
-  text-align: center;
 }
 
 #grid .cell {
-  display: inline-block;
+  display: flex;
+  justify-content: center;
   margin: 2px 4px;
   border-radius: 6px;
   background-color: rgb(230, 230, 230);
@@ -48,9 +74,9 @@ body {
 
 /*cell classes*/
 /*the cell classe should actually contain the different symbols rather than different colours*/
-#grid .home {
+/* #grid .home {
   background-color: rgb(200, 200, 200);
-}
+} */
 
 /* #grid .virus {
   background-color: rgb(210, 230, 230);
@@ -126,9 +152,10 @@ body {
   z-index: 1;
   position: absolute;
   border-radius: 50%;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.2), 0 3px 6px rgba(0,0,0,0.2);
 }
 
-#restart {
+/* #restart {
   position: absolute;
   bottom: 20px;
   right: 20px;
@@ -146,4 +173,4 @@ body {
 #restart:active {
   opacity: 0;
   transition: all 0.6s;
-}
+} */
