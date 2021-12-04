@@ -39,6 +39,7 @@ for (i = 0; i < rows; i++) {
 }
 const uniqueCellTypes = [...new Set(allCellTypes)];
 let occupiedCells = [...homeCells];
+let activeCells = [];
 const markers = [];
 // const markerWidth = Math.round((30 / cols) * 10) / 10 + 'vw';
 const totalMarkers = 10;
@@ -144,23 +145,23 @@ for (i = 0; i < totalMarkers; i++) {
 
 //remove click events from all cells (when clicking on marker and after moving marker)
 function removeCellClickEvent() {
-  for (i = 0; i < cells; i++) {
-    let cell = document.getElementById(i);
+  for (i = 0; i < activeCells.length; i++) {
+    let cell = document.getElementById(activeCells[i]);
     cell.removeEventListener('click', clickCell);
     cell.style.cursor = 'default';
     // cell.style.backgroundColor = homeCells.indexOf(i) < 0 ? 'rgb(230, 230, 230)' : 'rgb(200, 200, 200)';
     cell.style.backgroundColor = 'rgb(230, 230, 230)';
   }
+  activeCells = [];
 }
 
 //add click event to required cells when clicking on marker
 function clickMarker(e) {
   activeMarker = e.target;
-  // if (activePlayer != undefined) {
-  if (moveCount != 0) {
+  if (activePlayer != undefined) {
     let prevActiveMarker = markers[z].marker;
     // if (prevActiveMarker.style.backgroundColor == 'rgb(0, 0, 0)') {
-    if (prevActiveMarker.id != activeMarker.id) {
+    if (prevActiveMarker.id != activeMarker.id && activeCells.length != 0) {
       removeCellClickEvent();
       prevActiveMarker.style.backgroundColor = markers[z].tokenColour;
     }
@@ -201,6 +202,7 @@ function clickMarker(e) {
         cell.style.backgroundColor = 'rgb(244, 244, 244)';
         cell.style.cursor = 'pointer';
         cell.addEventListener('click', clickCell);
+        activeCells.push(cellID);
       }
     }
   }
