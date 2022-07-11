@@ -26,11 +26,10 @@ body {
 
 #gameArea {
   display: flex;
-  justify-content: center;
-  align-items: center;
   width: 76%;
   height: 100vh;
-  /* align-content: middle; */
+  justify-content: center;
+  align-items: center;
 }
 
 #gameBoard {
@@ -43,7 +42,6 @@ body {
 
 #columnHeaders {
   display: flex;
-  /* flex-wrap: wrap; */
   position: relative;
   width: 100%;
   height: auto;
@@ -60,18 +58,24 @@ body {
 #grid {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
   position: relative;
   width: 100%;
   height: auto;
+  justify-content: center;
 }
 
 #grid .cell {
   display: flex;
-  justify-content: center;
   margin: 2px 4px;
+  overflow: hidden;
+  word-break: break-word;
+  hyphens: auto;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
   border-radius: 6px;
   background-color: rgb(230, 230, 230);
+
 }
 
 /*cell classes*/
