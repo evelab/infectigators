@@ -1,28 +1,34 @@
 const grid = document.getElementById('grid');
 const rows = 5;
-const cols = 13;
+const cols = 11;
 const cells = rows * cols;
-const headers = ['Home', 'Vector', 'Vaccine', 'Prevention', 'Free', 'Symptoms', 'Treatment', 'Agent', 'Home'];
+const headers = ['Home', 'Source', 'Transmission', 'Prevention', 'Free', 'Symptoms', 'Treatment', 'Type', 'Home'];
 // const cellWidth = Math.round((60 / cols) * 10) / 10 + 'vw';
-const homeCells = [];
+const homeCells = []; //index of start and target cells
 for (i = 0; i < rows; i++) {
   homeCells.splice(i, 0, cols * i); //player 1
   homeCells.push(cols * i + (cols - 1)); //player 2
 }
 const firstCol = homeCells.slice(0, 5);
 const cellTypes = {
-  covid19: ['*', 'people', 'vaccine', 'mask', 'wash', 'crowds', 'switch', 'fever', 'cough', 'fatigue', 'rest', 'virus', '*'],
-  malaria: ['*', 'bite', 'medication', 'nets', 'spray', 'clothes', 'switch', 'fever', 'vomit', 'fatigue', 'medication', 'microbe', '*'],
-  dengue: ['*', 'bite', 'vaccine', 'nets', 'spray', 'clothes', 'switch', 'fever', 'vomit', 'aches', 'rest', 'virus', '*'],
-  bilharzia: ['*', 'water', 'medication', 'boil', 'avoid', 'cook', 'switch', 'blood', 'skin', 'aches', 'medication', 'parasite', '*'],
-  chagas: ['*', 'bite', 'clean', '?', 'spray', 'insect', 'switch', 'fever', 'vomit', 'aches', 'medication', 'microbe', '*']
+  'Yellow Fever': ['*', 'arthropod', 'bite', 'net', 'repellent', '', 'vomit', 'fever', 'rehydrate', 'virus', '*'],
+  'Coronavirus': ['*', 'human', 'cough', 'mask', 'wash hands', '', 'fatigue', 'fever', 'symptom relief', 'virus', '*'],
+  'Rabies': ['*', 'animal', 'bite', 'education', 'avoid', '', 'fever', 'pain', 'wash wound', 'virus', '*'],
+  'American Tryps': ['*', 'arthropod', 'bite', 'clean house', 'repellent', '', 'vomit', 'fever', 'drugs', 'microorganism', '*'],
+  'Ebola': ['*', 'human', 'fluids', 'cook food', 'wash hands', '', 'vomit', 'fever', 'rehydrate', 'virus', '*'],
+  'Borreliosis': ['*', 'arthropod', 'bite', 'clothing', 'repellent', '', 'lesions', 'fever', 'drugs', 'microorganism', '*'],
+  'Cholera': ['*', 'human', 'water', 'cook food', 'wash hands', '', 'diarrhoea', 'vomit', 'rehydrate', 'microorganism', '*'],
+  'Malaria': ['*', 'arthropod', 'bite', 'net', 'repellent', '', 'vomit', 'fever', 'drugs', 'microorganism', '*'],
+  'Dengue Fever': ['*', 'arthropod', 'bite', 'net', 'repellent', '', 'pain', 'vomit', 'symptom relief', 'virus', '*'],
+  'Influenza': ['*', 'human', 'cough', 'mask', 'wash hands', '', 'fever', 'cough', 'symptom relief', 'virus', '*'],
+  'African Tryps': ['*', 'arthropod', 'bite', 'net', 'repellent', '', 'fatigue', 'fever', 'drugs', 'microorganism', '*'],
 };
 let bugs = Object.keys(cellTypes);
 //randomise order of rows/bugs (so layout of board is different for each game)
 bugs = shuffle(bugs);
 function shuffle(array) {
   let tmp, current;
-  let top = rows - 1;
+  let top = bugs.length - 1;
   while (top > 0) {
     current = Math.floor(Math.random() * (top + 1));
     tmp = array[current];
@@ -42,6 +48,7 @@ let occupiedCells = [...homeCells];
 let activeCells = [];
 const markers = [];
 // const markerWidth = Math.round((30 / cols) * 10) / 10 + 'vw';
+const markersAtTarget = []; //markers that have reached home cells and can no longer move
 const totalMarkers = 10;
 const halfOfMarkers = totalMarkers/2;
 let activePlayer;
@@ -49,11 +56,27 @@ let activeMarker;
 let z; //active marker index
 const maxMoves = 3;
 let moveCount = 0;
-const allowedMoves = {
+// const allowedMoves = { //includes diagonal moves
+//   p1: [
+//     [-cols, -cols+1, 1, cols, cols+1],
+//     [-cols*2, -cols*2+1, -cols*2+2, -cols, -cols+1, -cols+2, 1, 2, cols, cols+1, cols+2, cols*2, cols*2+1, cols*2+2],
+//     [-cols*3, -cols*3+1, -cols*3+2, -cols*3+3, -cols*2, -cols*2+1, -cols*2+2, -cols*2+3, -cols, -cols+1, -cols+2, -cols+3, 1, 2, 3, cols, cols+1, cols+2, cols+3, cols*2, cols*2+1, cols*2+2, cols*2+3, cols*3, cols*3+1, cols*3+2, cols*3+3]
+//   ],
+//   p2: []
+// };
+// const allowedMoves = { //no diagonal moves
+//   p1: [
+//     [-cols, 1, cols],
+//     [-cols*2, -cols, 1, 2, cols, cols*2],
+//     [-cols*3, -cols*2, -cols, 1, 2, 3, cols, cols*2, cols*3]
+//   ],
+//   p2: []
+// };
+const allowedMoves = { //no diagonal moves
   p1: [
-    [-cols, -cols+1, 1, cols, cols+1],
-    [-cols*2, -cols*2+1, -cols*2+2, -cols, -cols+1, -cols+2, 1, 2, cols, cols+1, cols+2, cols*2, cols*2+1, cols*2+2],
-    [-cols*3, -cols*3+1, -cols*3+2, -cols*3+3, -cols*2, -cols*2+1, -cols*2+2, -cols*2+3, -cols, -cols+1, -cols+2, -cols+3, 1, 2, 3, cols, cols+1, cols+2, cols+3, cols*2, cols*2+1, cols*2+2, cols*2+3, cols*3, cols*3+1, cols*3+2, cols*3+3]
+    [1, 2, 3], //forward
+    [cols, cols*2, cols*3], //up
+    [-cols, -cols*2, -cols*3] //down
   ],
   p2: []
 };
@@ -100,6 +123,7 @@ for (i = 0; i < cells; i++) {
 }
 
 //create headers for grid
+//adjust width of header based on number of columns in a given category
 const columnHeaders = document.getElementById('columnHeaders');
 const headersLength = headers.length;
 for (i = 0; i < headersLength; i++) {
@@ -107,7 +131,7 @@ for (i = 0; i < headersLength; i++) {
   header.className = 'headerText';
   let ht = headers[i];
   if (ht === 'Prevention' || ht === 'Symptoms') {
-    header.style.width = cellWidth * 3 + 16 + 'px';
+    header.style.width = cellWidth * 2 + 8 + 'px';
   } else {
     header.style.width = cellWidth + 'px';
   }
@@ -161,7 +185,8 @@ function clickMarker(e) {
   if (activePlayer != undefined) {
     let prevActiveMarker = markers[z].marker;
     // if (prevActiveMarker.style.backgroundColor == 'rgb(0, 0, 0)') {
-    if (prevActiveMarker.id != activeMarker.id && activeCells.length != 0) {
+    // if (prevActiveMarker.id != activeMarker.id && activeCells.length != 0) {
+    if (prevActiveMarker.id != activeMarker.id) {
       removeCellClickEvent();
       prevActiveMarker.style.backgroundColor = markers[z].tokenColour;
     }
@@ -188,22 +213,58 @@ function clickMarker(e) {
   }
   // activeMarker.style.backgroundColor = 'rgb(0, 0, 0)';
   activeMarker.style.backgroundColor = z < halfOfMarkers ? 'rgba(255, 118, 0, 1)' : 'rgba(0, 108, 255, 1)';
-  let m = (maxMoves - moveCount) - 1;
-  let moves = allowedMoves['p' + activePlayer][m];
-  let movesLength = moves.length;
+  // let m = (maxMoves - moveCount) - 1;
+  // let moves = allowedMoves['p' + activePlayer][m];
+  // let movesLength = moves.length;
+  let m = (maxMoves - moveCount);
+  let moves = allowedMoves['p' + activePlayer];
 
   let currentCellType = document.getElementById(markers[z].currentCell).getAttribute('data-celltype');
-  for (i = 0; i < movesLength; i++) {
-    let cellID = moves[i] + markers[z].currentCell;
-    if (cellID >= 0 && cellID < cells && occupiedCells.indexOf(cellID) < 0) {
-      let cell = document.getElementById(cellID);
-      let nextCellType = cell.getAttribute('data-celltype');
-      if ((moves[i] > -4 && moves[i] < 4) || currentCellType == nextCellType) {
-        cell.style.backgroundColor = 'rgb(244, 244, 244)';
-        cell.style.cursor = 'pointer';
-        cell.addEventListener('click', clickCell);
-        activeCells.push(cellID);
+  // for (i = 0; i < movesLength; i++) {
+  //   let cellID = moves[i] + markers[z].currentCell;
+  //   if (cellID >= 0 && cellID < cells && occupiedCells.indexOf(cellID) < 0) {
+  //     let cell = document.getElementById(cellID);
+  //     let nextCellType = cell.getAttribute('data-celltype');
+  //     if ((moves[i] > -4 && moves[i] < 4) || currentCellType == nextCellType) {
+  //       cell.style.backgroundColor = 'rgb(244, 244, 244)';
+  //       cell.style.cursor = 'pointer';
+  //       cell.addEventListener('click', clickCell);
+  //       activeCells.push(cellID);
+  //     }
+  //   }
+  // }
+  for (i = 0; i < 3; i++) {
+    let subMoves = moves[i];
+    nextCell:
+    for (j = 0; j < m; j++) {
+      let cellID = subMoves[j] + markers[z].currentCell;
+      let cell;
+      let cellType;
+      if (cellID < 0 || cellID >= cells || occupiedCells.indexOf(cellID) >= 0) {
+        break;
+      } else {
+        cell = document.getElementById(cellID);
+        cellType = cell.getAttribute('data-celltype');
+        if (i === 0) {
+          cell.style.backgroundColor = 'rgb(244, 244, 244)';
+          cell.style.cursor = 'pointer';
+          cell.addEventListener('click', clickCell);
+          activeCells.push(cellID);
+          if (cellType === '0') { //break "nextCell" loop if cellType is a home cell
+            break nextCell;
+          }
+        } else if (currentCellType != cellType) {
+          break;
+        } else {
+          cell.style.backgroundColor = 'rgb(244, 244, 244)';
+          cell.style.cursor = 'pointer';
+          cell.addEventListener('click', clickCell);
+          activeCells.push(cellID);
+        }
       }
+    }
+    if (homeCells.indexOf(markers[z].currentCell) >= 0) { //markers at a home cell can only go forward
+      break;
     }
   }
 }
@@ -244,8 +305,13 @@ function clickCell(e) {
   occupiedCells.splice(occupiedCells.indexOf(cellA), 1, cellB);
   //check if clicked cell is a home cell (and add points if so)
   // if (homeCells.indexOf(cellB) >= 0) {
-  //check if clicked cell is a target cell (and add points if so)
+  //check if clicked cell is a target cell and if so...
+  //add points and
+  //make marker unmoveable in subsequent turns
   if (markers[z].targetCells.indexOf(cellB) >= 0) {
+    activeMarker.removeEventListener('click', clickMarker);
+    activeMarker.style.cursor = 'default';
+    markersAtTarget.push(z);
     let updatedPoints = ++points['p' + activePlayer];
     document.getElementById('p' + activePlayer + 'Points').textContent = updatedPoints;
   }
@@ -270,7 +336,7 @@ function swapPlayers() {
       if (i < halfOfMarkers) {
         token.removeEventListener('click', clickMarker);
         token.style.cursor = 'default';
-      } else {
+      } else if (markersAtTarget.indexOf(i) < 0) {
         token.addEventListener('click', clickMarker);
         token.style.cursor = 'pointer';
       }
@@ -279,7 +345,7 @@ function swapPlayers() {
   } else {
     for (i = 0; i < totalMarkers; i++) {
       let token = document.getElementById('m' + i);
-      if (i < halfOfMarkers) {
+      if (i < halfOfMarkers & markersAtTarget.indexOf(i) < 0) {
         token.addEventListener('click', clickMarker);
         token.style.cursor = 'pointer';
       } else {
