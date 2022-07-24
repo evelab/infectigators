@@ -1,26 +1,27 @@
+//define board size (i.e. number of cells in grid), cell types (i.e. diseases, symptoms, etc.) and other game parameters
 const grid = document.getElementById('grid');
 const rows = 5;
 const cols = 11;
 const cells = rows * cols;
 const headers = ['Home', 'Source', 'Transmission', 'Prevention', 'Free', 'Symptoms', 'Treatment', 'Type', 'Home'];
-const homeCells = []; //index of start and target cells
+const homeCells = []; //index of 'home' cells (i.e. start and target cells)
 for (i = 0; i < rows; i++) {
-  homeCells.splice(i, 0, cols * i); //player 1
-  homeCells.push(cols * i + (cols - 1)); //player 2
+  homeCells.splice(i, 0, cols * i); //player 1 home cells
+  homeCells.push(cols * i + (cols - 1)); //player 2 home cells
 }
 const firstCol = homeCells.slice(0, 5);
 const cellTypes = {
-  'Yellow Fever': ['*', 'arthropod', 'bite', 'net', 'repellent', '', 'vomit', 'fever', 'rehydrate', 'virus', '*'],
-  'Coronavirus': ['*', 'human', 'cough', 'mask', 'wash hands', '', 'fatigue', 'fever', 'symptom relief', 'virus', '*'],
-  'Rabies': ['*', 'animal', 'bite', 'education', 'avoid', '', 'fever', 'pain', 'wash wound', 'virus', '*'],
-  'American Tryps': ['*', 'arthropod', 'bite', 'clean house', 'repellent', '', 'vomit', 'fever', 'drugs', 'microorganism', '*'],
-  'Ebola': ['*', 'human', 'fluids', 'cook food', 'wash hands', '', 'vomit', 'fever', 'rehydrate', 'virus', '*'],
-  'Borreliosis': ['*', 'arthropod', 'bite', 'clothing', 'repellent', '', 'lesions', 'fever', 'drugs', 'microorganism', '*'],
-  'Cholera': ['*', 'human', 'water', 'cook food', 'wash hands', '', 'diarrhoea', 'vomit', 'rehydrate', 'microorganism', '*'],
-  'Malaria': ['*', 'arthropod', 'bite', 'net', 'repellent', '', 'vomit', 'fever', 'drugs', 'microorganism', '*'],
-  'Dengue Fever': ['*', 'arthropod', 'bite', 'net', 'repellent', '', 'pain', 'vomit', 'symptom relief', 'virus', '*'],
-  'Influenza': ['*', 'human', 'cough', 'mask', 'wash hands', '', 'fever', 'cough', 'symptom relief', 'virus', '*'],
-  'African Tryps': ['*', 'arthropod', 'bite', 'net', 'repellent', '', 'fatigue', 'fever', 'drugs', 'microorganism', '*'],
+  'Yellow Fever': ['home', 'arthropod', 'bite', 'net', 'repellent', 'free', 'vomit', 'fever', 'rehydrate', 'virus', 'home'],
+  'Coronavirus': ['home', 'human', 'cough', 'mask', 'wash hands', 'free', 'fatigue', 'fever', 'symptom relief', 'virus', 'home'],
+  'Rabies': ['home', 'animal', 'bite', 'education', 'avoid', 'free', 'fever', 'pain', 'wash wound', 'virus', 'home'],
+  'American Tryps': ['home', 'arthropod', 'bite', 'clean house', 'repellent', 'free', 'vomit', 'fever', 'drugs', 'microorganism', 'home'],
+  'Ebola': ['home', 'human', 'fluids', 'cook food', 'wash hands', 'free', 'vomit', 'fever', 'rehydrate', 'virus', 'home'],
+  'Borreliosis': ['home', 'arthropod', 'bite', 'clothing', 'repellent', 'free', 'lesions', 'fever', 'drugs', 'microorganism', 'home'],
+  'Cholera': ['home', 'human', 'water', 'cook food', 'wash hands', 'free', 'diarrhoea', 'vomit', 'rehydrate', 'microorganism', 'home'],
+  'Malaria': ['home', 'arthropod', 'bite', 'net', 'repellent', 'free', 'vomit', 'fever', 'drugs', 'microorganism', 'home'],
+  'Dengue Fever': ['home', 'arthropod', 'bite', 'net', 'repellent', 'free', 'pain', 'vomit', 'symptom relief', 'virus', 'home'],
+  'Influenza': ['home', 'human', 'cough', 'mask', 'wash hands', 'free', 'fever', 'cough', 'symptom relief', 'virus', 'home'],
+  'African Tryps': ['home', 'arthropod', 'bite', 'net', 'repellent', 'free', 'fatigue', 'fever', 'drugs', 'microorganism', 'home']
 };
 let bugs = Object.keys(cellTypes);
 //randomise order of rows/bugs (so layout of board is different for each game)
@@ -43,6 +44,7 @@ for (i = 0; i < rows; i++) {
   cellTypes[bugs[i]].map(e => allCellTypes.push(e));
 }
 const uniqueCellTypes = [...new Set(allCellTypes)];
+const cellsWithBackground = [5, 16, 27, 38, 49]; //THIS IS TEMPORARY - ALL CELLS WILL HAVE BACKGROUNDS
 let occupiedCells = [...homeCells];
 let activeCells = [];
 const markers = [];
@@ -66,6 +68,8 @@ for (i = 0; i < maxMoves; i++) {
   let _p2 = allowedMoves.p1[i].map(e => e * -1);
   allowedMoves.p2.push(_p2);
 }
+const maxPoints = 3;
+let updatedPoints = 0;
 const points = {
   p1: 0,
   p2: 0
@@ -82,7 +86,7 @@ const cellWidth = Math.round((grid.clientWidth - 110) / cols);
 const cellWidthPx = cellWidth + 'px';
 for (i = 0; i < cells; i++) {
   let cell = document.createElement('div');
-  cell.className = 'cell';
+  // cell.className = 'cell';
   cell.style.width = cellWidthPx;
   cell.style.height = cellWidthPx;
   // cell.style.lineHeight = cellWidthPx;
@@ -90,9 +94,14 @@ for (i = 0; i < cells; i++) {
     j++;
     k = 0;
   }
-  if (homeCells.indexOf(i) > -1) {
+  if (homeCells.indexOf(i) > -1) { //THIS IS TEMPORARY - ALL CELLS WILL HAVE BACKGROUNDS
+    cell.className = 'cell';
     cell.textContent = bugs[j];
-  } else {
+  } else if (cellsWithBackground.indexOf(i) > -1) {
+    cell.className = 'cell ' + cellTypes[bugs[j]][k];
+  }
+  else {
+    cell.className = 'cell';
     cell.textContent = cellTypes[bugs[j]][k];
   }
   cell.setAttribute('data-celltype', uniqueCellTypes.indexOf(cellTypes[bugs[j]][k]));
@@ -195,6 +204,21 @@ function clickMarker(e) {
   let moves = allowedMoves['p' + activePlayer];
   let currentCellType = document.getElementById(markers[z].currentCell).getAttribute('data-celltype');
   for (i = 0; i < 3; i++) {
+    //if on 'free' cell can move to any other unoccupied 'free' cell
+    if (currentCellType === '5' && i != 0) { //type '5' is a 'free' (i.e. switch) cell (depends on number of columns!)
+      for (k = 0; k < rows; k++) {
+        let cellID = (k * 11) + 5;
+        if (occupiedCells.indexOf(cellID) >= 0) {
+          continue;
+        }
+        let cell = document.getElementById(cellID);
+        cell.style.backgroundColor = 'rgb(244, 244, 244)';
+        cell.style.cursor = 'pointer';
+        cell.addEventListener('click', clickCell);
+        activeCells.push(cellID);
+      }
+      return;
+    }
     let subMoves = moves[i];
     nextCell:
     for (j = 0; j < m; j++) {
@@ -205,11 +229,7 @@ function clickMarker(e) {
         break;
       }
       if (occupiedCells.indexOf(cellID) >= 0) {
-        if (currentCellType != '5' || i === 0) { //cell type '5' is a 'Free' or switch cell (may vary depending on board columns!)
-          break;
-        } else {
-          continue;
-        }
+        break;
       } else {
         cell = document.getElementById(cellID);
         cellType = cell.getAttribute('data-celltype');
@@ -218,7 +238,7 @@ function clickMarker(e) {
           cell.style.cursor = 'pointer';
           cell.addEventListener('click', clickCell);
           activeCells.push(cellID);
-          if (cellType === '0') { //break "nextCell" loop if cellType is a home cell (type '0')
+          if (cellType === '0') { //break "nextCell" loop if cellType is a 'home' cell (type '0')
             break nextCell;
           }
         } else if (currentCellType != cellType) {
@@ -258,9 +278,6 @@ function clickCell(e) {
   function frame() {
     if (i == 30) {
       clearInterval(mm);
-      if (moveCount === 3) {
-        swapPlayers();
-      };
     } else {
       i++;
       x = x + xDiff;
@@ -271,20 +288,14 @@ function clickCell(e) {
   }
   activeMarker.style.backgroundColor = markers[z].tokenColour;
   occupiedCells.splice(occupiedCells.indexOf(cellA), 1, cellB);
-  //check if clicked cell is a target cell...
-  //add points and
-  //make marker unmoveable in subsequent turns
-  if (markers[z].targetCells.indexOf(cellB) >= 0) {
-    activeMarker.removeEventListener('click', clickMarker);
-    activeMarker.style.cursor = 'default';
-    markersAtTarget.push(z);
-    let updatedPoints = ++points['p' + activePlayer];
-    document.getElementById('p' + activePlayer + 'Points').textContent = updatedPoints;
-  }
   //calculate number of moves it takes to get to clicked cell
-  let cellDiff = Math.abs(cellB - cellA);
   let newMoves = null;
-  if (cellDiff % cols === 0) {
+  let cellDiff = Math.abs(cellB - cellA);
+  //if moving within 'free' column count as 1 move only
+  if (document.getElementById(cellA).getAttribute('data-celltype') === '5' && clickedCell.getAttribute('data-celltype') === '5') {
+    newMoves = 1;
+  }
+  else if (cellDiff % cols === 0) {
     newMoves = cellDiff / cols;
   } else {
     cellA = cellA % cols;
@@ -293,6 +304,27 @@ function clickCell(e) {
   }
   moveCount = moveCount + newMoves;
   statsMoves.textContent = maxMoves - moveCount;
+  //check if clicked cell is a home cell...
+  //make marker unmoveable in subsequent turns and
+  //add points (check if points = maxPoints and end game)
+  if (clickedCell.getAttribute('data-celltype') === '0') {
+    activeMarker.removeEventListener('click', clickMarker);
+    activeMarker.style.cursor = 'default';
+    markersAtTarget.push(z);
+    updatedPoints = ++points['p' + activePlayer];
+    document.getElementById('p' + activePlayer + 'Points').textContent = updatedPoints;
+    if (updatedPoints === maxPoints) {
+      document.getElementById('winner').textContent = 'PLAYER ' + activePlayer + ' WINS!'
+      for (j = 0; j < totalMarkers; j++) {
+        let token = document.getElementById('m' + j);
+        token.removeEventListener('click', clickMarker);
+        token.style.cursor = 'default';
+      }
+    }
+  }
+  if (moveCount === 3 && updatedPoints < maxPoints) {
+    swapPlayers();
+  }
 }
 
 function swapPlayers() {

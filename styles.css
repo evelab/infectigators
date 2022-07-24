@@ -24,6 +24,17 @@ body {
   font-size: 110%;
 }
 
+.playerOne {
+  color: rgb(255, 118, 0);
+}
+.playerTwo {
+  color: rgb(0, 108, 255);
+}
+
+#winner {
+  font-weight: bold;
+}
+
 #gameArea {
   display: flex;
   width: 76%;
@@ -64,6 +75,13 @@ body {
   justify-content: center;
 }
 
+.token {
+  z-index: 1;
+  position: absolute;
+  border-radius: 50%;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.2), 0 3px 6px rgba(0,0,0,0.2);
+}
+
 #grid .cell {
   display: flex;
   margin: 2px 4px;
@@ -75,14 +93,15 @@ body {
   text-align: center;
   border-radius: 6px;
   background-color: rgb(230, 230, 230);
-
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
-/*cell classes*/
-/*the cell classe should actually contain the different symbols rather than different colours*/
-/* #grid .home {
-  background-color: rgb(200, 200, 200);
-} */
+/*cell 'types'*/
+#grid .free {
+  background-size: 60%;
+  background-image: url('/assets/icons/free.svg');
+}
 
 /* #grid .virus {
   background-color: rgb(210, 230, 230);
@@ -153,20 +172,6 @@ body {
 #grid .bad {
   background-color: rgb(230, 230, 140);
 } */
-
-.token {
-  z-index: 1;
-  position: absolute;
-  border-radius: 50%;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.2), 0 3px 6px rgba(0,0,0,0.2);
-}
-
-.playerOne {
-  color: rgb(255, 118, 0);
-}
-.playerTwo {
-  color: rgb(0, 108, 255);
-}
 
 /* #restart {
   position: absolute;
