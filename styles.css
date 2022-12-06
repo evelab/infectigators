@@ -92,85 +92,42 @@ body {
   align-items: center;
   text-align: center;
   border-radius: 6px;
+  background-size: 90%;
   background-color: rgb(230, 230, 230);
   background-position: center;
   background-repeat: no-repeat;
 }
+#grid .cellText {
+  display: none;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-content: center;
+  color:rgb(255, 255, 255);
+  background-color: rgba(0, 0, 0, 0.7);
+  pointer-events: none;
+}
+#grid .cell:hover .cellText {
+  display: flex;
+}
 
 /*cell 'types'*/
-#grid .free {
+/*#grid .free {
   background-size: 60%;
   background-image: url('assets/icons/free.svg');
 }
-
-/* #grid .virus {
-  background-color: rgb(210, 230, 230);
+#grid .virus {
+  background-size: 90%;
+  background-image: url('assets/icons/virus.svg');
 }
 #grid .microbe {
-  background-color: rgb(230, 210, 230);
+  background-size: 90%;
+  background-image: url('assets/icons/microbe.svg');
 }
 #grid .parasite {
-  background-color: rgb(230, 230, 210);
-}
-
-#grid .air {
-  background-color: rgb(180, 230, 230);
-}
-#grid .place {
-  background-color: rgb(230, 180, 230);
-}
-#grid .water {
-  background-color: rgb(230, 230, 180);
-}
-
-#grid .mask {
-  background-color: rgb(210, 210, 230);
-}
-#grid .wash {
-  background-color: rgb(230, 210, 210);
-}
-#grid .people {
-  background-color: rgb(210, 230, 210);
-}
-#grid .fever {
-  background-color: rgb(180, 180, 230);
-}
-#grid .net {
-  background-color: rgb(230, 180, 180);
-}
-#grid .spray {
-  background-color: rgb(180, 230, 180);
-}
-#grid .clothes {
-  background-color: rgb(210, 210, 180);
-}
-#grid .clean {
-  background-color: rgb(180, 210, 210);
-}
-#grid .vomit {
-  background-color: rgb(210, 180, 210);
-}
-#grid .boil {
-  background-color: rgb(180, 180, 140);
-}
-#grid .avoid {
-  background-color: rgb(140, 180, 180);
-}
-#grid .aches {
-  background-color: rgb(180, 140, 180);
-}
-#grid .skin {
-  background-color: rgb(140, 140, 210);
-}
-
-#grid .contact {
-  background-color: rgb(140, 230, 230);
-}
-#grid .insect {
-  background-color: rgb(230, 140, 230);
-}
-#grid .bad {
-  background-color: rgb(230, 230, 140);
+  background-size: 60%;
+  background-image: url('assets/icons/parasite.svg');
 } */
 
 /* #restart {

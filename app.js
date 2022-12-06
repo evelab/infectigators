@@ -10,19 +10,7 @@ for (i = 0; i < rows; i++) {
   homeCells.push(cols * i + (cols - 1)); //player 2 home cells
 }
 const firstCol = homeCells.slice(0, 5);
-const cellTypes = {
-  'Yellow Fever': ['home', 'arthropod', 'bite', 'net', 'repellent', 'free', 'vomit', 'fever', 'rehydrate', 'virus', 'home'],
-  'Coronavirus': ['home', 'human', 'cough', 'mask', 'wash hands', 'free', 'fatigue', 'fever', 'symptom relief', 'virus', 'home'],
-  'Rabies': ['home', 'animal', 'bite', 'education', 'avoid', 'free', 'fever', 'pain', 'wash wound', 'virus', 'home'],
-  'American Tryps': ['home', 'arthropod', 'bite', 'clean house', 'repellent', 'free', 'vomit', 'fever', 'drugs', 'microorganism', 'home'],
-  'Ebola': ['home', 'human', 'fluids', 'cook food', 'wash hands', 'free', 'vomit', 'fever', 'rehydrate', 'virus', 'home'],
-  'Borreliosis': ['home', 'arthropod', 'bite', 'clothing', 'repellent', 'free', 'lesions', 'fever', 'drugs', 'microorganism', 'home'],
-  'Cholera': ['home', 'human', 'water', 'cook food', 'wash hands', 'free', 'diarrhoea', 'vomit', 'rehydrate', 'microorganism', 'home'],
-  'Malaria': ['home', 'arthropod', 'bite', 'net', 'repellent', 'free', 'vomit', 'fever', 'drugs', 'microorganism', 'home'],
-  'Dengue Fever': ['home', 'arthropod', 'bite', 'net', 'repellent', 'free', 'pain', 'vomit', 'symptom relief', 'virus', 'home'],
-  'Influenza': ['home', 'human', 'cough', 'mask', 'wash hands', 'free', 'fever', 'cough', 'symptom relief', 'virus', 'home'],
-  'African Tryps': ['home', 'arthropod', 'bite', 'net', 'repellent', 'free', 'fatigue', 'fever', 'drugs', 'microorganism', 'home']
-};
+//cellTypes from diseases.js
 let bugs = Object.keys(cellTypes);
 //randomise order of rows/bugs (so layout of board is different for each game)
 bugs = shuffle(bugs);
@@ -44,7 +32,7 @@ for (i = 0; i < rows; i++) {
   cellTypes[bugs[i]].map(e => allCellTypes.push(e));
 }
 const uniqueCellTypes = [...new Set(allCellTypes)];
-const cellsWithBackground = [5, 16, 27, 38, 49]; //THIS IS TEMPORARY - ALL CELLS WILL HAVE BACKGROUNDS
+// const cellsWithBackground = [5, 16, 27, 38, 49]; //THIS IS TEMPORARY - ALL CELLS WILL HAVE BACKGROUNDS
 let occupiedCells = [...homeCells];
 let activeCells = [];
 const markers = [];
@@ -86,27 +74,34 @@ const cellWidth = Math.round((grid.clientWidth - 110) / cols);
 const cellWidthPx = cellWidth + 'px';
 for (i = 0; i < cells; i++) {
   let cell = document.createElement('div');
-  // cell.className = 'cell';
+  cell.className = 'cell';
   cell.style.width = cellWidthPx;
   cell.style.height = cellWidthPx;
   // cell.style.lineHeight = cellWidthPx;
+  let cellText = document.createElement('div');
+  cellText.className = 'cellText';
   if (firstCol.indexOf(i) > 0) {
     j++;
     k = 0;
   }
   if (homeCells.indexOf(i) > -1) { //THIS IS TEMPORARY - ALL CELLS WILL HAVE BACKGROUNDS
-    cell.className = 'cell';
+    // cell.className = 'cell';
     cell.textContent = bugs[j];
-  } else if (cellsWithBackground.indexOf(i) > -1) {
-    cell.className = 'cell ' + cellTypes[bugs[j]][k];
+  // } else if (cellsWithBackground.indexOf(i) > -1) {
+  //   cell.className = 'cell ' + cellTypes[bugs[j]][k];
   }
   else {
-    cell.className = 'cell';
-    cell.textContent = cellTypes[bugs[j]][k];
+    // cell.className = 'cell';
+    cell.style.backgroundImage = 'url("assets/icons/' + cellTypes[bugs[j]][k] + '.svg")';
+    cellText.textContent = cellTypes[bugs[j]][k];
+    // cell.className = 'cell ' + cellTypes[bugs[j]][k];
+    // cell.className = 'cell';
+    // cell.textContent = cellTypes[bugs[j]][k];
   }
   cell.setAttribute('data-celltype', uniqueCellTypes.indexOf(cellTypes[bugs[j]][k]));
   cell.id = i;
   grid.appendChild(cell);
+  cell.appendChild(cellText);
   k++;
 }
 
@@ -155,13 +150,19 @@ for (i = 0; i < totalMarkers; i++) {
   markers.push(markerObject);
 }
 
+//resize board and tokens when window is resized
+// function resizeGameBoard() {
+//   console.log(window.innerWidth);
+// }
+// window.onresize = resizeGameBoard;
+
 //remove click events from all cells (when clicking on marker and after moving marker)
 function removeCellClickEvent() {
   for (i = 0; i < activeCells.length; i++) {
     let cell = document.getElementById(activeCells[i]);
     cell.removeEventListener('click', clickCell);
     cell.style.cursor = 'default';
-    cell.style.backgroundColor = 'rgb(230, 230, 230)';
+    // cell.style.backgroundColor = 'rgb(230, 230, 230)';
   }
   activeCells = [];
 }
@@ -212,7 +213,7 @@ function clickMarker(e) {
           continue;
         }
         let cell = document.getElementById(cellID);
-        cell.style.backgroundColor = 'rgb(244, 244, 244)';
+        // cell.style.backgroundColor = 'rgb(244, 244, 244)';
         cell.style.cursor = 'pointer';
         cell.addEventListener('click', clickCell);
         activeCells.push(cellID);
@@ -234,7 +235,7 @@ function clickMarker(e) {
         cell = document.getElementById(cellID);
         cellType = cell.getAttribute('data-celltype');
         if (i === 0) {
-          cell.style.backgroundColor = 'rgb(244, 244, 244)';
+          // cell.style.backgroundColor = 'rgb(244, 244, 244)';
           cell.style.cursor = 'pointer';
           cell.addEventListener('click', clickCell);
           activeCells.push(cellID);
@@ -244,7 +245,7 @@ function clickMarker(e) {
         } else if (currentCellType != cellType) {
           break;
         } else {
-          cell.style.backgroundColor = 'rgb(244, 244, 244)';
+          // cell.style.backgroundColor = 'rgb(244, 244, 244)';
           cell.style.cursor = 'pointer';
           cell.addEventListener('click', clickCell);
           activeCells.push(cellID);
