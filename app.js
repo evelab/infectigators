@@ -70,14 +70,16 @@ statsMoves = document.getElementById('moves');
 //create grid cells and add event listener for mouse click... clickCell() function
 let j = 0;
 let k = 0;
-const cellWidth = Math.round((grid.clientWidth - 110) / cols);
-const cellWidthPx = cellWidth + 'px';
+let cellWidth = Math.round((grid.clientWidth - 110) / cols);
+let cellWidthPx = cellWidth + 'px';
 for (i = 0; i < cells; i++) {
   let cell = document.createElement('div');
+  cell.id = i;
   cell.className = 'cell';
   cell.style.width = cellWidthPx;
   cell.style.height = cellWidthPx;
   // cell.style.lineHeight = cellWidthPx;
+  cell.setAttribute('data-celltype', uniqueCellTypes.indexOf(cellTypes[bugs[j]][k]));
   let cellText = document.createElement('div');
   cellText.className = 'cellText';
   if (firstCol.indexOf(i) > 0) {
@@ -98,8 +100,6 @@ for (i = 0; i < cells; i++) {
     // cell.className = 'cell';
     // cell.textContent = cellTypes[bugs[j]][k];
   }
-  cell.setAttribute('data-celltype', uniqueCellTypes.indexOf(cellTypes[bugs[j]][k]));
-  cell.id = i;
   grid.appendChild(cell);
   cell.appendChild(cellText);
   k++;
@@ -123,18 +123,18 @@ for (i = 0; i < headersLength; i++) {
 }
 
 //create markers
-const markerWidth = Math.round(((grid.clientWidth - 110) / cols) / 2) + 'px';
+let markerWidth = Math.round(((grid.clientWidth - 110) / cols) / 2) + 'px';
 for (i = 0; i < totalMarkers; i++) {
   let token = document.createElement('div');
+  token.id = 'm' + i;
+  token.className = 'token';
   token.style.width = markerWidth;
   token.style.height = markerWidth;
-  token.className = 'token';
   let colour = i < halfOfMarkers ? 'rgba(255, 118, 0, 0.8)' : 'rgba(0, 108, 255, 0.8)';
   let border = i < halfOfMarkers ? '2px solid rgba(255, 118, 1)' : '2px solid rgba(0, 108, 255, 1)';
   let targets = i < halfOfMarkers ?  homeCells.slice(rows, rows*2) : homeCells.slice(0, rows);
   token.style.backgroundColor = colour;
   token.style.border = border;
-  token.id = 'm' + i;
   //initial (home) position of each marker
   let homeCell = homeCells[i];
   let cell = document.getElementById(homeCell);
@@ -150,9 +150,22 @@ for (i = 0; i < totalMarkers; i++) {
   markers.push(markerObject);
 }
 
-//resize board and tokens when window is resized
+//resize cells and tokens when window is resized
 // function resizeGameBoard() {
-//   console.log(window.innerWidth);
+//   cellWidth = Math.round((grid.clientWidth - 110) / cols);
+//   cellWidthPx = cellWidth + 'px';
+//   for (i = 0; i < cells; i++) {
+//     let cell = document.getElementById(i);
+//     cell.style.width = cellWidthPx;
+//     cell.style.height = cellWidthPx;
+//   }
+//   markerWidth = Math.round(((grid.clientWidth - 110) / cols) / 2) + 'px';
+//   for (i = 0; i < totalMarkers; i++) {
+//     let token = document.getElementById('m' + i);
+//     token.style.width = markerWidth;
+//     token.style.height = markerWidth;
+//     // token.style.left = 10 + 'px';
+//   }
 // }
 // window.onresize = resizeGameBoard;
 
