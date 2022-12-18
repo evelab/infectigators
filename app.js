@@ -1,4 +1,19 @@
+const cellTypes = {
+  'Coronavirus': ['home', 'humans', 'droplets', 'mask', 'wash hands', 'free', 'fatigue', 'fever', 'symptom relief', 'virus', 'home'],
+  'Rabies': ['home', 'animals', 'bite', 'education', 'avoid animals', 'free', 'fever', 'pain', 'wound cleaning', 'virus', 'home'],
+  'Borreliosis': ['home', 'arthropod', 'bite', 'clothing', 'repellent', 'free', 'rash', 'fever', 'medication', 'microorganism', 'home'],
+  'Malaria': ['home', 'arthropod', 'bite', 'net', 'repellent', 'free', 'vomitting', 'fever', 'medication', 'microorganism', 'home'],
+  'Influenza': ['home', 'humans', 'droplets', 'mask', 'wash hands', 'free', 'fever', 'cough', 'symptom relief', 'virus', 'home']
+  //     'Yellow Fever': ['home', 'arthropod', 'bite', 'net', 'repellent', 'free', 'vomitting', 'fever', 'rehydration', 'virus', 'home'],
+//     'American Tryps': ['home', 'arthropod', 'bite', 'tidy house', 'repellent', 'free', 'vomitting', 'fever', 'drugs', 'microorganism', 'home'],
+//     'Ebola': ['home', 'humans', 'fluids', 'cook food', 'wash hands', 'free', 'vomitting', 'fever', 'rehydration', 'virus', 'home'],
+//     'Cholera': ['home', 'humans', 'water', 'cook food', 'wash hands', 'free', 'diarrhoea', 'vomitting', 'rehydration', 'microorganism', 'home'],
+//     'Dengue Fever': ['home', 'arthropod', 'bite', 'net', 'repellent', 'free', 'pain', 'vomitting', 'symptom relief', 'virus', 'home'],
+//     'African Tryps': ['home', 'arthropod', 'bite', 'net', 'repellent', 'free', 'fatigue', 'fever', 'drugs', 'microorganism', 'home']
+};
+
 //define board size (i.e. number of cells in grid), cell types (i.e. diseases, symptoms, etc.) and other game parameters
+const gameBoard = document.getElementById('gameBoard');
 const grid = document.getElementById('grid');
 const rows = 5;
 const cols = 11;
@@ -10,7 +25,6 @@ for (i = 0; i < rows; i++) {
   homeCells.push(cols * i + (cols - 1)); //player 2 home cells
 }
 const firstCol = homeCells.slice(0, 5);
-//cellTypes from diseases.js
 let bugs = Object.keys(cellTypes);
 //randomise order of rows/bugs (so layout of board is different for each game)
 bugs = shuffle(bugs);
@@ -70,7 +84,8 @@ statsMoves = document.getElementById('moves');
 //create grid cells and add event listener for mouse click... clickCell() function
 let j = 0;
 let k = 0;
-let cellWidth = Math.round((grid.clientWidth - 110) / cols);
+let currentClientWidth = grid.clientWidth;
+let cellWidth = Math.round((currentClientWidth - 110) / cols);
 let cellWidthPx = cellWidth + 'px';
 for (i = 0; i < cells; i++) {
   let cell = document.createElement('div');
@@ -111,6 +126,7 @@ const columnHeaders = document.getElementById('columnHeaders');
 const headersLength = headers.length;
 for (i = 0; i < headersLength; i++) {
   let header = document.createElement('div');
+  header.id = 'h' + i;
   header.className = 'headerText';
   let ht = headers[i];
   if (ht === 'Prevention' || ht === 'Symptoms') {
@@ -121,9 +137,10 @@ for (i = 0; i < headersLength; i++) {
   header.textContent = ht;
   columnHeaders.appendChild(header);
 }
+// gameBoard.style.height = Math.round(gameBoard.offsetWidth * 0.465) + 'px';
 
 //create markers
-let markerWidth = Math.round(((grid.clientWidth - 110) / cols) / 2) + 'px';
+let markerWidth = Math.round(((currentClientWidth - 110) / cols) / 2) + 'px';
 for (i = 0; i < totalMarkers; i++) {
   let token = document.createElement('div');
   token.id = 'm' + i;
@@ -150,22 +167,38 @@ for (i = 0; i < totalMarkers; i++) {
   markers.push(markerObject);
 }
 
-//resize cells and tokens when window is resized
+// resize cells, headers and tokens, and reposition tokens when window is resized
 // function resizeGameBoard() {
-//   cellWidth = Math.round((grid.clientWidth - 110) / cols);
+//   gameBoard.style.height = Math.round(gameBoard.clientWidth * 0.465) + 'px';
+//   console.log(gameBoard.offsetWidth / gameBoard.offsetHeight);
+//   console.log(grid.clientWidth);
+//   let newClientWidth = grid.clientWidth;
+//   cellWidth = Math.round((newClientWidth - 110) / cols);
 //   cellWidthPx = cellWidth + 'px';
 //   for (i = 0; i < cells; i++) {
 //     let cell = document.getElementById(i);
 //     cell.style.width = cellWidthPx;
 //     cell.style.height = cellWidthPx;
 //   }
-//   markerWidth = Math.round(((grid.clientWidth - 110) / cols) / 2) + 'px';
+//   for (i = 0; i < headersLength; i++) {
+//     let header = document.getElementById('h' + i);
+//     let ht = headers[i];
+//     if (ht === 'Prevention' || ht === 'Symptoms') {
+//       header.style.width = cellWidth * 2 + 8 + 'px';
+//     } else {
+//       header.style.width = cellWidth + 'px';
+//     }
+//   }
+//   markerWidth = Math.round(((newClientWidth - 110) / cols) / 2) + 'px';
+//   let diffX = (currentClientWidth - newClientWidth);
 //   for (i = 0; i < totalMarkers; i++) {
 //     let token = document.getElementById('m' + i);
 //     token.style.width = markerWidth;
 //     token.style.height = markerWidth;
-//     // token.style.left = 10 + 'px';
+//     let oldX = token.offsetLeft;
+//     token.style.left = oldX - diffX + 'px';
 //   }
+//   currentClientWidth = grid.clientWidth;
 // }
 // window.onresize = resizeGameBoard;
 
