@@ -1,3 +1,12 @@
+const lockscreen = document.getElementById('lockscreen');
+function instructionsDisplay() {
+  if(lockscreen.style.display == 'none') {
+    lockscreen.style.display = 'flex';
+  } else {
+    lockscreen.style.display = 'none';
+  }
+}
+
 const cellTypes = {
   'Coronavirus': ['home', 'humans', 'droplets', 'mask', 'wash hands', 'free', 'fatigue', 'fever', 'symptom relief', 'virus', 'home'],
   'Rabies': ['home', 'animals', 'bite', 'education', 'avoid animals', 'free', 'fever', 'pain', 'wound cleaning', 'virus', 'home'],
@@ -46,7 +55,6 @@ for (i = 0; i < rows; i++) {
   cellTypes[bugs[i]].map(e => allCellTypes.push(e));
 }
 const uniqueCellTypes = [...new Set(allCellTypes)];
-// const cellsWithBackground = [5, 16, 27, 38, 49]; //THIS IS TEMPORARY - ALL CELLS WILL HAVE BACKGROUNDS
 let occupiedCells = [...homeCells];
 let activeCells = [];
 const markers = [];
@@ -78,8 +86,12 @@ const points = {
 };
 
 //game stats
-statsActivePlayer = document.getElementById('activePlayer');
-statsMoves = document.getElementById('moves');
+// statsActivePlayer = document.getElementById('activePlayer');
+const statsMovesLeft = document.getElementsByClassName('movesLeft');
+const statsPlayer1 = document.getElementById('statsPlayerOne');
+const statsPlayer2 = document.getElementById('statsPlayerTwo');
+const player1 = document.getElementById('playerOne');
+const player2 = document.getElementById('playerTwo');
 
 //create grid cells and add event listener for mouse click... clickCell() function
 let j = 0;
@@ -94,13 +106,13 @@ for (i = 0; i < cells; i++) {
   cell.style.width = cellWidthPx;
   cell.style.height = cellWidthPx;
   // cell.style.lineHeight = cellWidthPx;
-  cell.setAttribute('data-celltype', uniqueCellTypes.indexOf(cellTypes[bugs[j]][k]));
   let cellText = document.createElement('div');
   cellText.className = 'cellText';
   if (firstCol.indexOf(i) > 0) {
     j++;
     k = 0;
   }
+  cell.setAttribute('data-celltype', uniqueCellTypes.indexOf(cellTypes[bugs[j]][k]));
   if (homeCells.indexOf(i) > -1) { //THIS IS TEMPORARY - ALL CELLS WILL HAVE BACKGROUNDS
     // cell.className = 'cell';
     cell.textContent = bugs[j];
@@ -137,7 +149,6 @@ for (i = 0; i < headersLength; i++) {
   header.textContent = ht;
   columnHeaders.appendChild(header);
 }
-// gameBoard.style.height = Math.round(gameBoard.offsetWidth * 0.465) + 'px';
 
 //create markers
 let markerWidth = Math.round(((currentClientWidth - 110) / cols) / 2) + 'px';
@@ -166,41 +177,6 @@ for (i = 0; i < totalMarkers; i++) {
   let markerObject = {marker:token, currentCell:homeCell, prevCell:homeCell, tokenColour:colour, targetCells:targets};
   markers.push(markerObject);
 }
-
-// resize cells, headers and tokens, and reposition tokens when window is resized
-// function resizeGameBoard() {
-//   gameBoard.style.height = Math.round(gameBoard.clientWidth * 0.465) + 'px';
-//   console.log(gameBoard.offsetWidth / gameBoard.offsetHeight);
-//   console.log(grid.clientWidth);
-//   let newClientWidth = grid.clientWidth;
-//   cellWidth = Math.round((newClientWidth - 110) / cols);
-//   cellWidthPx = cellWidth + 'px';
-//   for (i = 0; i < cells; i++) {
-//     let cell = document.getElementById(i);
-//     cell.style.width = cellWidthPx;
-//     cell.style.height = cellWidthPx;
-//   }
-//   for (i = 0; i < headersLength; i++) {
-//     let header = document.getElementById('h' + i);
-//     let ht = headers[i];
-//     if (ht === 'Prevention' || ht === 'Symptoms') {
-//       header.style.width = cellWidth * 2 + 8 + 'px';
-//     } else {
-//       header.style.width = cellWidth + 'px';
-//     }
-//   }
-//   markerWidth = Math.round(((newClientWidth - 110) / cols) / 2) + 'px';
-//   let diffX = (currentClientWidth - newClientWidth);
-//   for (i = 0; i < totalMarkers; i++) {
-//     let token = document.getElementById('m' + i);
-//     token.style.width = markerWidth;
-//     token.style.height = markerWidth;
-//     let oldX = token.offsetLeft;
-//     token.style.left = oldX - diffX + 'px';
-//   }
-//   currentClientWidth = grid.clientWidth;
-// }
-// window.onresize = resizeGameBoard;
 
 //remove click events from all cells (when clicking on marker and after moving marker)
 function removeCellClickEvent() {
@@ -233,6 +209,8 @@ function clickMarker(e) {
         token.removeEventListener('click', clickMarker);
         token.style.cursor = 'default';
       }
+      player1.style.textDecoration = 'underline';
+      statsPlayer1.style.visibility = 'visible';
     } else {
       activePlayer = 2;
       for (i = 0; i < halfOfMarkers; i++) {
@@ -240,10 +218,14 @@ function clickMarker(e) {
         token.removeEventListener('click', clickMarker);
         token.style.cursor = 'default';
       }
+      player2.style.textDecoration = 'underline';
+      statsPlayer2.style.visibility = 'visible';
     }
     //update game stats
-    statsActivePlayer.textContent = activePlayer;
-    statsMoves.textContent = maxMoves;
+    // statsActivePlayer.textContent = activePlayer;
+    // for (i = 0; i < 2; i++) {
+    //   statsMovesLeft[i].textContent = maxMoves;
+    // }
   }
   //determine which moves are possible for the given player and marker
   activeMarker.style.backgroundColor = z < halfOfMarkers ? 'rgba(255, 118, 0, 1)' : 'rgba(0, 108, 255, 1)';
@@ -350,7 +332,9 @@ function clickCell(e) {
     newMoves = Math.abs(cellB - cellA);
   }
   moveCount = moveCount + newMoves;
-  statsMoves.textContent = maxMoves - moveCount;
+  for (b = 0; b < 2; b++) {
+    statsMovesLeft[b].textContent = maxMoves - moveCount;
+  }
   //check if clicked cell is a home cell...
   //make marker unmoveable in subsequent turns and
   //add points (check if points = maxPoints and end game)
@@ -361,7 +345,7 @@ function clickCell(e) {
     updatedPoints = ++points['p' + activePlayer];
     document.getElementById('p' + activePlayer + 'Points').textContent = updatedPoints;
     if (updatedPoints === maxPoints) {
-      document.getElementById('winner').textContent = 'PLAYER ' + activePlayer + ' WINS!'
+      // document.getElementById('winner').textContent = 'PLAYER ' + activePlayer + ' WINS!'
       for (j = 0; j < totalMarkers; j++) {
         let token = document.getElementById('m' + j);
         token.removeEventListener('click', clickMarker);
@@ -386,6 +370,10 @@ function swapPlayers() {
         token.style.cursor = 'pointer';
       }
     }
+    player1.style.textDecoration = 'none';
+    player2.style.textDecoration = 'underline';
+    statsPlayer1.style.visibility = 'hidden';
+    statsPlayer2.style.visibility = 'visible';
     activePlayer = 2;
   } else {
     for (i = 0; i < totalMarkers; i++) {
@@ -398,21 +386,15 @@ function swapPlayers() {
         token.style.cursor = 'default';
       }
     }
+    player1.style.textDecoration = 'underline';
+    player2.style.textDecoration = 'none';
+    statsPlayer1.style.visibility = 'visible';
+    statsPlayer2.style.visibility = 'hidden';
     activePlayer = 1;
   }
-  statsActivePlayer.textContent = activePlayer;
+  // statsActivePlayer.textContent = activePlayer;
   moveCount = 0;
-  statsMoves.textContent = maxMoves;
+  for (i = 0; i < 2; i++) {
+    statsMovesLeft[i].textContent = maxMoves;
+  }
 }
-
-//reset game
-// function resetGame() {
-//   for (i = 0; i < cells; i++) {
-//     let cell = document.getElementById(i);
-//     cell.style.backgroundColor = 'rgb(230, 230, 230)';
-//     cell.onmouseover = function() {cell.style.boxShadow = '1px 1px 5px rgb(160, 160, 160)'};
-//     cell.onmouseout = function() {cell.style.boxShadow = 'initial'};
-//     cell.addEventListener('click', clickCell);
-//     cell.style.cursor = 'pointer';
-//   }
-// }

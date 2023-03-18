@@ -5,46 +5,59 @@
     <title>Disease Discovery</title>
     <meta charset='utf-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand&display=swap" rel="stylesheet">
     <link rel='stylesheet' href='styles.css' />
     <script defer type='text/javascript' src='app.js'></script>
   </head>
 
   <body>
 
-    <div id='wrapper'>
-      <div id='instructions'>
-        <p>Aim:</p>
-        <p>First player to get three counters to the opposite 'Home' side wins.</p>
-        <br>
-        <p>Instructions:</p>
-        <p>For each turn, players can move their counters 3 times. Moves can be split amongst any of their counters in play in whichever way they like: one counter 3 times, or 3 different counters each once.</p>
-        <p>Counters can move forward, or sideways if an adjacent square has a symbol matching their current square. Counters cannot move backwards.</p>
-        <p>If a player encounters a counter of the opposite team, they are blocked (no one can move forward).</p>
-        <p>Within the 'Free' lane, a player can move their counter to any unoccupied square.</p>
-        <p>Players can only land on the 'Home' square if it is unoccupied by the other player.</p>
+    <div id='gameArea'>
+      <div id='topdiv'>
+        <span class='gameTitle'>DISEASE DISCOVERY</span>
       </div>
-
-      <div id='gameArea'>
-        <div id='gameBoard'>
-          <div id='columnHeaders'></div>
-          <div id='grid'></div>
+      <div id='gameBoard'>
+        <div id='columnHeaders'></div>
+        <div id='grid'></div>
+      </div>
+      <div id='stats'>
+        <div id='statsPlayerOne'>
+          <span>[</span><span class='movesLeft'>3</span><span>&nbsp;of 3 moves left]</span>
+        </div>
+        <div class='statsCenter'>
+          <span id='playerOne'>Player I</span>&nbsp;&nbsp;&nbsp;<span id='p1Points'>0</span>
+        </div>
+        <div class='statsCenter'>
+          <span>&nbsp;-&nbsp;</span>
+        </div>
+        <div class='statsCenter'>
+          <span id='p2Points'>0</span>&nbsp;&nbsp;&nbsp;<span id='playerTwo'>Player II</span>
+        </div>
+        <div id='statsPlayerTwo'>
+          <span>[</span><span class='movesLeft'>3</span><span>&nbsp;of 3 moves left]</span>
         </div>
       </div>
+      <div id='buttons'>
+        <button id='infoButton' onclick='instructionsDisplay()'></button>
+      </div>
+    </div>
 
-      <div id='results'>
-        <p>Game Stats</p>
-        <br><br>
-        <span>Active player: </span><span id='activePlayer'></span>
-        <br><br>
-        <span>Remaining moves: </span><span id='moves'></span>
-        <br><br><br><br>
-        <p>Points</p>
-        <span class='playerOne'>Player 1: </span><span id='p1Points'>0</span>
-        <br><br>
-        <span class='playerTwo'>Player 2: </span><span id='p2Points'>0</span>
-        <br><br><br><br>
-        <span id='winner'></span>
-        <!-- <div id='restart' onclick=resetGame()>play again</div> -->
+    <div id='lockscreen'>
+      <div id='instructions'>
+        <button id='closeButton' onclick='instructionsDisplay()'></button>
+        <p>DISEASE DISCOVERY</p>
+        <br>
+        <p>Aim:</p>
+        <p>First player to get three pieces to the opposite 'Home' side wins.</p>
+        <br>
+        <p>Instructions:</p>
+        <p>In each turn, players can move their pieces 3 times. Moves can be split amongst any of their pieces in play in whichever way they like: one piece 3 times, or 3 different pieces each once.</p>
+        <p>Pieces can move forward, or sideways if an adjacent square has a symbol that matches their current square. Pieces cannot move backwards.</p>
+        <p>If a player encounters a piece of the other player, neither piece can move forward and may be blocked if they can't move sideways either.</p>
+        <p>Within the 'Free' lane, a player can move their piece to any unoccupied square.</p>
+        <p>Players can only land on the 'Home' square if it is unoccupied by the other player.</p>
       </div>
     </div>
 
