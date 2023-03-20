@@ -1,9 +1,9 @@
 const lockscreen = document.getElementById('lockscreen');
 function instructionsDisplay() {
-  if(lockscreen.style.display == 'none') {
-    lockscreen.style.display = 'flex';
-  } else {
+  if(lockscreen.style.display == 'flex') {
     lockscreen.style.display = 'none';
+  } else {
+    lockscreen.style.display = 'flex';
   }
 }
 

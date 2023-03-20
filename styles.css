@@ -10,7 +10,7 @@ body {
 
 #lockscreen {
   z-index: 1;
-  display: flex;
+  display: none;
   position: fixed;
   top: 0;
   left: 0;
@@ -131,7 +131,7 @@ body {
 #gameBoard {
   width: 1200px;
   flex: 0 0 530px;
-  border-radius: 10px;
+  /* border-radius: 10px; */
 }
 
 #columnHeaders {
@@ -196,5 +196,72 @@ body {
   display: flex;
 }
 
-/* modifiers for devices smaller than 861px */
-@media only screen and (max-width: 860px) {}
+/* modifiers for tablet (in landscape mode) */
+@media only screen and (min-width: 861px) and (max-width: 1279px) {
+  html,
+  body {
+    font-size: 0.97em;
+  }
+
+  #instructions {
+    width: 80%;
+    font-size: 110%;
+  }
+
+  #stats {
+    flex: 1 0 40px;
+    font-size: 130%;
+  }
+
+  #gameBoard {
+    /* width: 660px;
+    flex: 0 0 215px; */
+    width: 90%;
+    flex: 0 0 60%;
+  }
+
+  #columnHeaders .headerText {
+    font-size: 100%;
+  }
+}
+
+/* modifiers for phone (in landscape mode) */
+@media only screen and (max-width: 860px) {
+  html,
+  body {
+    font-size: 0.88em;
+  }
+
+  #lockscreen {
+    position: absolute;
+  }
+
+  #instructions {
+    width: 92%;
+    height: 100%;
+    padding: 2%;
+    font-size: 110%;
+  }
+
+  #topdiv {
+    display: none;
+  }
+
+  #stats {
+    flex: 1 0 40px;
+    font-size: 130%;
+  }
+
+  #buttons {
+    flex: 0 0 16px;
+  }
+
+  #gameBoard {
+    width: 90%;
+    flex: 0 0 60%;
+  }
+
+  #columnHeaders .headerText {
+    font-size: 90%;
+  }
+}
