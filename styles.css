@@ -234,9 +234,9 @@ body {
     font-size: 0.86em;
   }
 
-  #lockscreen {
+  /* #lockscreen {
     position: absolute;
-  }
+  } */
 
   #instructions {
     width: 92%;
