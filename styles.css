@@ -18,53 +18,55 @@ body {
   height: 100%;
   justify-content: center;
   align-items: center;
-  background-color: rgba(255, 255, 255, 0.6);
+  background-color: rgba(255, 255, 255, 0.8);
 }
 
 #instructions {
   position: relative;
   width: 800px;
   height: 75%;
-  padding: 3%;
+  padding: 2% 3%;
   font-size: 110%;
-  background-color: rgb(219, 247, 194);
+  color: rgb(255, 255, 255);
+  /* background-color: rgb(219, 247, 194); */
+  background-color: rgba(0, 0, 0, 0.88);
   border-radius: 10px;
+  overflow-y: auto;
+  scrollbar-color: rgb(60, 60, 60) transparent;
+}
+/* #instructionsTop {
+  display: flex;
+  justify-content: right;
+  width: 100%;
+} */
+
+.button {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background-color: transparent;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 90%;
+  border: none;
+  border-radius: 50%;
+}
+.button:hover {
+  cursor: pointer;
 }
 
 #closeButton {
-  position: absolute;
+  /* position: fixed; */
   top: 20px;
   right: 20px;
-  width: 40px;
-  height: 40px;
-  background-color: transparent;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: 90%;
   background-image: url('assets/icons/close.svg');
-  border: none;
-  border-radius: 50%;
-}
-#closeButton:hover {
-  cursor: pointer;
 }
 
 #infoButton {
-  position: absolute;
+  /* position: absolute; */
   bottom: 20px;
   right: 20px;
-  width: 40px;
-  height: 40px;
-  background-color: transparent;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: 90%;
   background-image: url('assets/icons/info.svg');
-  border: none;
-  border-radius: 50%;
-}
-#infoButton:hover {
-  cursor: pointer;
 }
 
 #gameArea {
@@ -197,7 +199,7 @@ body {
 }
 
 /* modifiers for tablet (in landscape mode) */
-@media only screen and (min-width: 861px) and (max-width: 1279px) {
+@media only screen and (min-width: 941px) and (max-width: 1279px) {
   html,
   body {
     font-size: 0.97em;
@@ -226,10 +228,10 @@ body {
 }
 
 /* modifiers for phone (in landscape mode) */
-@media only screen and (max-width: 860px) {
+@media only screen and (max-width: 940px) {
   html,
   body {
-    font-size: 0.88em;
+    font-size: 0.86em;
   }
 
   #lockscreen {
@@ -238,9 +240,13 @@ body {
 
   #instructions {
     width: 92%;
-    height: 100%;
-    padding: 2%;
+    height: 86%;
     font-size: 110%;
+  }
+
+  .button {
+    width: 30px;
+    height: 30px;
   }
 
   #topdiv {
