@@ -299,13 +299,21 @@ function clickCell(e) {
   let mm = null;
   let x = activeMarker.offsetLeft;
   let y = activeMarker.offsetTop;
-  let xDiff = (targetX - x) / 30;
-  let yDiff = (targetY - y) / 30;
+  // let xDiff = (targetX - x) / 30;
+  // let yDiff = (targetY - y) / 30;
+  //for constant speed
+  let distanceX = targetX - x;
+  let distanceY = targetY - y;
+  let distance = Math.round(Math.sqrt(distanceX * distanceX + distanceY * distanceY) / 4);
+  let xDiff = distanceX / distance;
+  let yDiff = distanceY / distance;
   clearInterval(mm);
-  mm = setInterval(frame, 10);
+  // mm = setInterval(frame, 10);
+  mm = setInterval(frame, 5);
   let i = 0;
   function frame() {
-    if (i == 30) {
+    // if (i == 30) {
+    if (i == distance) {
       clearInterval(mm);
     } else {
       i++;
