@@ -13,12 +13,12 @@ const cellTypes = {
   'Borreliosis': ['home', 'arthropod', 'bite', 'clothing', 'repellent', 'free', 'rash', 'fever', 'medication', 'microorganism', 'home'],
   'Malaria': ['home', 'arthropod', 'bite', 'net', 'repellent', 'free', 'vomitting', 'fever', 'medication', 'microorganism', 'home'],
   'Influenza': ['home', 'humans', 'droplets', 'mask', 'wash hands', 'free', 'fever', 'cough', 'rest', 'virus', 'home']
-  //     'Yellow Fever': ['home', 'arthropod', 'bite', 'net', 'repellent', 'free', 'vomitting', 'fever', 'rehydration', 'virus', 'home'],
-//     'American Tryps': ['home', 'arthropod', 'bite', 'tidy house', 'repellent', 'free', 'vomitting', 'fever', 'drugs', 'microorganism', 'home'],
-//     'Ebola': ['home', 'humans', 'fluids', 'cook food', 'wash hands', 'free', 'vomitting', 'fever', 'rehydration', 'virus', 'home'],
-//     'Cholera': ['home', 'humans', 'water', 'cook food', 'wash hands', 'free', 'diarrhoea', 'vomitting', 'rehydration', 'microorganism', 'home'],
-//     'Dengue Fever': ['home', 'arthropod', 'bite', 'net', 'repellent', 'free', 'pain', 'vomitting', 'rest', 'virus', 'home'],
-//     'African Tryps': ['home', 'arthropod', 'bite', 'net', 'repellent', 'free', 'fatigue', 'fever', 'drugs', 'microorganism', 'home']
+  // 'Yellow Fever': ['home', 'arthropod', 'bite', 'net', 'repellent', 'free', 'vomitting', 'fever', 'rehydration', 'virus', 'home'],
+  // 'American Tryps': ['home', 'arthropod', 'bite', 'tidy house', 'repellent', 'free', 'vomitting', 'fever', 'drugs', 'microorganism', 'home'],
+  // 'Ebola': ['home', 'humans', 'fluids', 'cook food', 'wash hands', 'free', 'vomitting', 'fever', 'rehydration', 'virus', 'home'],
+  // 'Cholera': ['home', 'humans', 'water', 'cook food', 'wash hands', 'free', 'diarrhoea', 'vomitting', 'rehydration', 'microorganism', 'home'],
+  // 'Dengue Fever': ['home', 'arthropod', 'bite', 'net', 'repellent', 'free', 'pain', 'vomitting', 'rest', 'virus', 'home'],
+  // 'African Tryps': ['home', 'arthropod', 'bite', 'net', 'repellent', 'free', 'fatigue', 'fever', 'drugs', 'microorganism', 'home']
 };
 
 //define board size (i.e. number of cells in grid), cell types (i.e. diseases, symptoms, etc.) and other game parameters
@@ -86,7 +86,6 @@ const points = {
 };
 
 //game stats
-// statsActivePlayer = document.getElementById('activePlayer');
 const statsMovesLeft = document.getElementsByClassName('movesLeft');
 const statsPlayer1 = document.getElementById('statsPlayerOne');
 const statsPlayer2 = document.getElementById('statsPlayerTwo');
@@ -180,7 +179,6 @@ function removeCellClickEvent() {
     let cell = document.getElementById(activeCells[i]);
     cell.removeEventListener('click', clickCell);
     cell.style.cursor = 'default';
-    // cell.style.backgroundColor = 'rgb(230, 230, 230)';
   }
   activeCells = [];
 }
@@ -223,30 +221,15 @@ function clickMarker(e) {
     z = Number(activeMarker.id.charAt(1));
     if (z < halfOfMarkers) {
       activePlayer = 1;
-      // for (i = halfOfMarkers; i < totalMarkers; i++) {
-      //   let token = document.getElementById('m' + i);
-      //   token.removeEventListener('click', clickMarker);
-      //   token.style.cursor = 'default';
-      // }
       removeMarkerClickEvent(halfOfMarkers, totalMarkers);
       player1.style.textDecoration = 'underline';
       statsPlayer1.style.visibility = 'visible';
     } else {
       activePlayer = 2;
-      // for (i = 0; i < halfOfMarkers; i++) {
-      //   let token = document.getElementById('m' + i);
-      //   token.removeEventListener('click', clickMarker);
-      //   token.style.cursor = 'default';
-      // }
       removeMarkerClickEvent(0, halfOfMarkers);
       player2.style.textDecoration = 'underline';
       statsPlayer2.style.visibility = 'visible';
     }
-    //update game stats
-    // statsActivePlayer.textContent = activePlayer;
-    // for (i = 0; i < 2; i++) {
-    //   statsMovesLeft[i].textContent = maxMoves;
-    // }
   }
   //determine which moves are possible for the given player and marker
   activeMarker.style.backgroundColor = z < halfOfMarkers ? 'rgba(255, 118, 0, 1)' : 'rgba(0, 108, 255, 1)';
@@ -262,7 +245,6 @@ function clickMarker(e) {
           continue;
         }
         let cell = document.getElementById(cellID);
-        // cell.style.backgroundColor = 'rgb(244, 244, 244)';
         cell.style.cursor = 'pointer';
         cell.addEventListener('click', clickCell);
         activeCells.push(cellID);
@@ -284,7 +266,6 @@ function clickMarker(e) {
         cell = document.getElementById(cellID);
         cellType = cell.getAttribute('data-celltype');
         if (i === 0) {
-          // cell.style.backgroundColor = 'rgb(244, 244, 244)';
           cell.style.cursor = 'pointer';
           cell.addEventListener('click', clickCell);
           activeCells.push(cellID);
@@ -294,16 +275,12 @@ function clickMarker(e) {
         } else if (currentCellType != cellType) {
           break;
         } else {
-          // cell.style.backgroundColor = 'rgb(244, 244, 244)';
           cell.style.cursor = 'pointer';
           cell.addEventListener('click', clickCell);
           activeCells.push(cellID);
         }
       }
     }
-    // if (homeCells.indexOf(markers[z].currentCell) >= 0) { //markers at a home cell can only go forward
-    //   break;
-    // }
   }
 }
 
@@ -325,8 +302,6 @@ function clickCell(e) {
   let mm = null;
   let x = activeMarker.offsetLeft;
   let y = activeMarker.offsetTop;
-  // let xDiff = (targetX - x) / 30;
-  // let yDiff = (targetY - y) / 30;
   //for constant speed
   let distanceX = targetX - x;
   let distanceY = targetY - y;
@@ -334,20 +309,9 @@ function clickCell(e) {
   let xDiff = distanceX / distance;
   let yDiff = distanceY / distance;
   clearInterval(mm);
-  // mm = setInterval(frame, 10);
   mm = setInterval(frame, 5);
   let i = 0;
   function frame() {
-    // if (i == 30) {
-    // if (i == distance) {
-    //   clearInterval(mm);
-    // } else {
-    //   i++;
-    //   x = x + xDiff;
-    //   y = y + yDiff;
-    //   activeMarker.style.left = x + 'px';
-    //   activeMarker.style.top = y + 'px';
-    // }
     if (i != distance) {
       i++;
       x += xDiff;
@@ -388,15 +352,13 @@ function clickCell(e) {
             cell.textContent = bugs[activeRow];
           }
         }
-        // activeMarker.removeEventListener('click', clickMarker);
-        // activeMarker.style.cursor = 'default';
         //add marker to list of unmoveable markers in subsequent turns
         markersAtEnd.push(z);
-        //add points (check if points = maxPoints and end game)
+        //add points
         updatedPoints = ++points['p' + activePlayer];
         document.getElementById('p' + activePlayer + 'Points').textContent = updatedPoints;
+        //check if points = maxPoints and end game
         if (updatedPoints === maxPoints) {
-          // document.getElementById('winner').textContent = 'PLAYER ' + activePlayer + ' WINS!'
           removeMarkerClickEvent(0, totalMarkers);
           return;
         }
@@ -412,75 +374,12 @@ function clickCell(e) {
       }
     }
   }
-  // activeMarker.style.backgroundColor = markers[z].tokenColour;
-  // occupiedCells.splice(occupiedCells.indexOf(cellA), 1, cellB);
-  //calculate number of moves it takes to get to clicked cell
-  // let newMoves = null;
-  // let cellDiff = Math.abs(cellB - cellA);
-  // //if moving within 'free' column count as 1 move only
-  // if (document.getElementById(cellA).getAttribute('data-celltype') === '5' && clickedCell.getAttribute('data-celltype') === '5') {
-  //   newMoves = 1;
-  // }
-  // else if (cellDiff % cols === 0) {
-  //   newMoves = cellDiff / cols;
-  // } else {
-  //   cellA = cellA % cols;
-  //   cellB = cellB % cols;
-  //   newMoves = Math.abs(cellB - cellA);
-  // }
-  // moveCount = moveCount + newMoves;
-  // for (b = 0; b < 2; b++) {
-  //   statsMovesLeft[b].textContent = maxMoves - moveCount;
-  // }
-  //check if clicked cell is an end cell and marker is not moving within start cells...
-  //reveal bug name
-  //make marker unmoveable in subsequent turns and
-  //add points (check if points = maxPoints and end game)
-  // if (clickedCell.getAttribute('data-celltype') === '0') {
-  // if (markers[z].endCells.indexOf(markers[z].currentCell) >= 0 && markers[z].endCells.indexOf(markers[z].prevCell) === -1) {
-  //   activeRow = Number(clickedCell.getAttribute('data-rownumber'));
-  //   clickedCell.style.fontSize = '100%';
-  //   clickedCell.textContent = bugs[activeRow];
-  //   activeMarker.removeEventListener('click', clickMarker);
-  //   activeMarker.style.cursor = 'default';
-  //   markersAtEnd.push(z);
-  //   updatedPoints = ++points['p' + activePlayer];
-  //   document.getElementById('p' + activePlayer + 'Points').textContent = updatedPoints;
-  //   if (updatedPoints === maxPoints) {
-  //     // document.getElementById('winner').textContent = 'PLAYER ' + activePlayer + ' WINS!'
-  //     // for (j = 0; j < totalMarkers; j++) {
-  //     //   let token = document.getElementById('m' + j);
-  //     //   token.removeEventListener('click', clickMarker);
-  //     //   token.style.cursor = 'default';
-  //     // }
-  //     removeMarkerClickEvent(0, totalMarkers);
-  //   }
-  // }
-  // if (moveCount === 3 && updatedPoints < maxPoints) {
-  //   swapPlayers();
-  // } else {
-  //   if (activePlayer === 1) {
-  //     addMarkerClickEvent(0, halfOfMarkers);
-  //   } else {
-  //     addMarkerClickEvent(halfOfMarkers, totalMarkers);
-  //   }
-  // }
 }
 
 function swapPlayers() {
   if (activePlayer === 1) {
     removeMarkerClickEvent(0, halfOfMarkers);
     addMarkerClickEvent(halfOfMarkers, totalMarkers);
-    // for (i = 0; i < totalMarkers; i++) {
-    //   let token = document.getElementById('m' + i);
-    //   if (i < halfOfMarkers) {
-    //     token.removeEventListener('click', clickMarker);
-    //     token.style.cursor = 'default';
-    //   } else if (markersAtEnd.indexOf(i) < 0) {
-    //     token.addEventListener('click', clickMarker);
-    //     token.style.cursor = 'pointer';
-    //   }
-    // }
     player1.style.textDecoration = 'none';
     player2.style.textDecoration = 'underline';
     statsPlayer1.style.visibility = 'hidden';
@@ -489,23 +388,12 @@ function swapPlayers() {
   } else {
     removeMarkerClickEvent(halfOfMarkers, totalMarkers);
     addMarkerClickEvent(0, halfOfMarkers);
-    // for (i = 0; i < totalMarkers; i++) {
-    //   let token = document.getElementById('m' + i);
-    //   if (i < halfOfMarkers && markersAtEnd.indexOf(i) < 0) {
-    //     token.addEventListener('click', clickMarker);
-    //     token.style.cursor = 'pointer';
-    //   } else {
-    //     token.removeEventListener('click', clickMarker);
-    //     token.style.cursor = 'default';
-    //   }
-    // }
     player1.style.textDecoration = 'underline';
     player2.style.textDecoration = 'none';
     statsPlayer1.style.visibility = 'visible';
     statsPlayer2.style.visibility = 'hidden';
     activePlayer = 1;
   }
-  // statsActivePlayer.textContent = activePlayer;
   moveCount = 0;
   for (i = 0; i < 2; i++) {
     statsMovesLeft[i].textContent = maxMoves;
