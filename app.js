@@ -27,8 +27,8 @@ const grid = document.getElementById('grid');
 const rows = 5;
 const cols = 11;
 const cells = rows * cols;
-const headers = ['Home', 'Source', 'Transmission', 'Prevention', 'Free', 'Symptoms', 'Treatment', 'Type', 'Home'];
-const homeCells = []; //index of 'home' cells (i.e. start and target cells)
+const headers = ['Home', 'Vector', 'Transmission', 'Prevention', 'Free', 'Symptoms', 'Treatment', 'Agent', 'Home'];
+const homeCells = []; //index of 'home' cells (i.e. start and end cells)
 for (i = 0; i < rows; i++) {
   homeCells.splice(i, 0, cols * i); //player 1 home cells
   homeCells.push(cols * i + (cols - 1)); //player 2 home cells
@@ -58,7 +58,7 @@ const uniqueCellTypes = [...new Set(allCellTypes)];
 let occupiedCells = [...homeCells];
 let activeCells = [];
 const markers = [];
-const markersAtTarget = []; //markers that have reached home cells and can no longer move
+const markersAtEnd = []; //markers that have reached home cells and can no longer move
 const totalMarkers = 10;
 const halfOfMarkers = totalMarkers/2;
 let activePlayer;
@@ -105,27 +105,22 @@ for (i = 0; i < cells; i++) {
   cell.className = 'cell';
   cell.style.width = cellWidthPx;
   cell.style.height = cellWidthPx;
-  // cell.style.lineHeight = cellWidthPx;
   let cellText = document.createElement('div');
   cellText.className = 'cellText';
   if (firstCol.indexOf(i) > 0) {
     j++;
     k = 0;
   }
+  cell.setAttribute('data-rownumber', j);
   cell.setAttribute('data-celltype', uniqueCellTypes.indexOf(cellTypes[bugs[j]][k]));
-  if (homeCells.indexOf(i) > -1) { //THIS IS TEMPORARY - ALL CELLS WILL HAVE BACKGROUNDS
-    // cell.className = 'cell';
-    cell.textContent = bugs[j];
-  // } else if (cellsWithBackground.indexOf(i) > -1) {
-  //   cell.className = 'cell ' + cellTypes[bugs[j]][k];
+  if (homeCells.indexOf(i) > -1) {
+    cell.textContent = '?';
+    cell.className += ' cellHome';
   }
   else {
-    // cell.className = 'cell';
+    cell.className += ' cellOther';
     cell.style.backgroundImage = 'url("assets/icons/' + cellTypes[bugs[j]][k] + '.svg")';
     cellText.textContent = cellTypes[bugs[j]][k];
-    // cell.className = 'cell ' + cellTypes[bugs[j]][k];
-    // cell.className = 'cell';
-    // cell.textContent = cellTypes[bugs[j]][k];
   }
   grid.appendChild(cell);
   cell.appendChild(cellText);
@@ -160,7 +155,8 @@ for (i = 0; i < totalMarkers; i++) {
   token.style.height = markerWidth;
   let colour = i < halfOfMarkers ? 'rgba(255, 118, 0, 0.8)' : 'rgba(0, 108, 255, 0.8)';
   let border = i < halfOfMarkers ? '2px solid rgba(255, 118, 1)' : '2px solid rgba(0, 108, 255, 1)';
-  let targets = i < halfOfMarkers ?  homeCells.slice(rows, rows*2) : homeCells.slice(0, rows);
+  let start = i < halfOfMarkers ? homeCells.slice(0, rows) : homeCells.slice(rows, rows*2);
+  let end = i < halfOfMarkers ? homeCells.slice(rows, rows*2) : homeCells.slice(0, rows);
   token.style.backgroundColor = colour;
   token.style.border = border;
   //initial (home) position of each marker
@@ -174,7 +170,7 @@ for (i = 0; i < totalMarkers; i++) {
   token.style.cursor = 'pointer';
   token.addEventListener('click', clickMarker);
   grid.appendChild(token);
-  let markerObject = {marker:token, currentCell:homeCell, prevCell:homeCell, tokenColour:colour, targetCells:targets};
+  let markerObject = {marker:token, currentCell:homeCell, prevCell:homeCell, tokenColour:colour, startCells:start, endCells:end};
   markers.push(markerObject);
 }
 
@@ -188,6 +184,29 @@ function removeCellClickEvent() {
   }
   activeCells = [];
 }
+
+//add click events to active player's markers (after completing a move)
+function addMarkerClickEvent(firstMarker, lastMarker) {
+  for (i = firstMarker; i < lastMarker; i++) {
+    if (markersAtEnd.indexOf(i) === -1) {
+      let token = document.getElementById('m' + i);
+      token.addEventListener('click', clickMarker);
+      token.style.cursor = 'pointer';
+    }
+  }
+}
+
+//remove click events from active player's markers (e.g. when clicking on cell to move marker)
+function removeMarkerClickEvent(firstMarker, lastMarker) {
+  for (i = firstMarker; i < lastMarker; i++) {
+    if (markersAtEnd.indexOf(i) === -1) {
+      let token = document.getElementById('m' + i);
+      token.removeEventListener('click', clickMarker);
+      token.style.cursor = 'default';
+    }
+  }
+}
+
 
 //add click event to required cells when clicking on marker
 function clickMarker(e) {
@@ -204,20 +223,22 @@ function clickMarker(e) {
     z = Number(activeMarker.id.charAt(1));
     if (z < halfOfMarkers) {
       activePlayer = 1;
-      for (i = halfOfMarkers; i < totalMarkers; i++) {
-        let token = document.getElementById('m' + i);
-        token.removeEventListener('click', clickMarker);
-        token.style.cursor = 'default';
-      }
+      // for (i = halfOfMarkers; i < totalMarkers; i++) {
+      //   let token = document.getElementById('m' + i);
+      //   token.removeEventListener('click', clickMarker);
+      //   token.style.cursor = 'default';
+      // }
+      removeMarkerClickEvent(halfOfMarkers, totalMarkers);
       player1.style.textDecoration = 'underline';
       statsPlayer1.style.visibility = 'visible';
     } else {
       activePlayer = 2;
-      for (i = 0; i < halfOfMarkers; i++) {
-        let token = document.getElementById('m' + i);
-        token.removeEventListener('click', clickMarker);
-        token.style.cursor = 'default';
-      }
+      // for (i = 0; i < halfOfMarkers; i++) {
+      //   let token = document.getElementById('m' + i);
+      //   token.removeEventListener('click', clickMarker);
+      //   token.style.cursor = 'default';
+      // }
+      removeMarkerClickEvent(0, halfOfMarkers);
       player2.style.textDecoration = 'underline';
       statsPlayer2.style.visibility = 'visible';
     }
@@ -233,7 +254,7 @@ function clickMarker(e) {
   let moves = allowedMoves['p' + activePlayer];
   let currentCellType = document.getElementById(markers[z].currentCell).getAttribute('data-celltype');
   for (i = 0; i < 3; i++) {
-    //if on 'free' cell can move to any other unoccupied 'free' cell
+    //if on 'free' or 'start (i.e. home)'cell can move to any other unoccupied cell in same column
     if (currentCellType === '5' && i != 0) { //type '5' is a 'free' (i.e. switch) cell (depends on number of columns!)
       for (k = 0; k < rows; k++) {
         let cellID = (k * 11) + 5;
@@ -280,15 +301,20 @@ function clickMarker(e) {
         }
       }
     }
-    if (homeCells.indexOf(markers[z].currentCell) >= 0) { //markers at a home cell can only go forward
-      break;
-    }
+    // if (homeCells.indexOf(markers[z].currentCell) >= 0) { //markers at a home cell can only go forward
+    //   break;
+    // }
   }
 }
 
 //move marker by clicking an empty cell (after clicking a marker)
 function clickCell(e) {
   removeCellClickEvent();
+  if (activePlayer === 1) {
+    removeMarkerClickEvent(0, halfOfMarkers);
+  } else {
+    removeMarkerClickEvent(halfOfMarkers, totalMarkers);
+  }
   let clickedCell = e.target;
   let cellA = markers[z].currentCell;
   markers[z].prevCell = cellA;
@@ -313,87 +339,166 @@ function clickCell(e) {
   let i = 0;
   function frame() {
     // if (i == 30) {
-    if (i == distance) {
-      clearInterval(mm);
-    } else {
+    // if (i == distance) {
+    //   clearInterval(mm);
+    // } else {
+    //   i++;
+    //   x = x + xDiff;
+    //   y = y + yDiff;
+    //   activeMarker.style.left = x + 'px';
+    //   activeMarker.style.top = y + 'px';
+    // }
+    if (i != distance) {
       i++;
-      x = x + xDiff;
-      y = y + yDiff;
+      x += xDiff;
+      y += yDiff;
       activeMarker.style.left = x + 'px';
       activeMarker.style.top = y + 'px';
-    }
-  }
-  activeMarker.style.backgroundColor = markers[z].tokenColour;
-  occupiedCells.splice(occupiedCells.indexOf(cellA), 1, cellB);
-  //calculate number of moves it takes to get to clicked cell
-  let newMoves = null;
-  let cellDiff = Math.abs(cellB - cellA);
-  //if moving within 'free' column count as 1 move only
-  if (document.getElementById(cellA).getAttribute('data-celltype') === '5' && clickedCell.getAttribute('data-celltype') === '5') {
-    newMoves = 1;
-  }
-  else if (cellDiff % cols === 0) {
-    newMoves = cellDiff / cols;
-  } else {
-    cellA = cellA % cols;
-    cellB = cellB % cols;
-    newMoves = Math.abs(cellB - cellA);
-  }
-  moveCount = moveCount + newMoves;
-  for (b = 0; b < 2; b++) {
-    statsMovesLeft[b].textContent = maxMoves - moveCount;
-  }
-  //check if clicked cell is a home cell...
-  //make marker unmoveable in subsequent turns and
-  //add points (check if points = maxPoints and end game)
-  if (clickedCell.getAttribute('data-celltype') === '0') {
-    activeMarker.removeEventListener('click', clickMarker);
-    activeMarker.style.cursor = 'default';
-    markersAtTarget.push(z);
-    updatedPoints = ++points['p' + activePlayer];
-    document.getElementById('p' + activePlayer + 'Points').textContent = updatedPoints;
-    if (updatedPoints === maxPoints) {
-      // document.getElementById('winner').textContent = 'PLAYER ' + activePlayer + ' WINS!'
-      for (j = 0; j < totalMarkers; j++) {
-        let token = document.getElementById('m' + j);
-        token.removeEventListener('click', clickMarker);
-        token.style.cursor = 'default';
+    } else {
+      clearInterval(mm);
+      activeMarker.style.backgroundColor = markers[z].tokenColour;
+      occupiedCells.splice(occupiedCells.indexOf(cellA), 1, cellB);
+      //calculate number of moves it takes to get to clicked cell
+      let newMoves = null;
+      let cellDiff = Math.abs(cellB - cellA);
+      //if moving within 'free' column count as 1 move only
+      if (document.getElementById(cellA).getAttribute('data-celltype') === '5' && clickedCell.getAttribute('data-celltype') === '5') {
+        newMoves = 1;
+      }
+      else if (cellDiff % cols === 0) {
+        newMoves = cellDiff / cols;
+      } else {
+        cellA = cellA % cols;
+        cellB = cellB % cols;
+        newMoves = Math.abs(cellB - cellA);
+      }
+      moveCount = moveCount + newMoves;
+      for (b = 0; b < 2; b++) {
+        statsMovesLeft[b].textContent = maxMoves - moveCount;
+      }
+      //check if clicked cell is an end cell and marker is not moving within start cells and...
+      if (markers[z].endCells.indexOf(markers[z].currentCell) >= 0 && markers[z].endCells.indexOf(markers[z].prevCell) === -1) {
+        //reveal bug name
+        activeRow = Number(clickedCell.getAttribute('data-rownumber'));
+        for (i = 0; i < cols; i++) {
+          let cell = document.getElementById(i + (activeRow * cols));
+          cell.style.backgroundColor = 'rgb(220, 243, 239)';
+          if (i === 0 || i === cols - 1) {
+            cell.style.fontSize = '100%';
+            cell.textContent = bugs[activeRow];
+          }
+        }
+        // activeMarker.removeEventListener('click', clickMarker);
+        // activeMarker.style.cursor = 'default';
+        //add marker to list of unmoveable markers in subsequent turns
+        markersAtEnd.push(z);
+        //add points (check if points = maxPoints and end game)
+        updatedPoints = ++points['p' + activePlayer];
+        document.getElementById('p' + activePlayer + 'Points').textContent = updatedPoints;
+        if (updatedPoints === maxPoints) {
+          // document.getElementById('winner').textContent = 'PLAYER ' + activePlayer + ' WINS!'
+          removeMarkerClickEvent(0, totalMarkers);
+          return;
+        }
+      }
+      if (moveCount === 3 && updatedPoints < maxPoints) {
+        swapPlayers();
+      } else {
+        if (activePlayer === 1) {
+          addMarkerClickEvent(0, halfOfMarkers);
+        } else {
+          addMarkerClickEvent(halfOfMarkers, totalMarkers);
+        }
       }
     }
   }
-  if (moveCount === 3 && updatedPoints < maxPoints) {
-    swapPlayers();
-  }
+  // activeMarker.style.backgroundColor = markers[z].tokenColour;
+  // occupiedCells.splice(occupiedCells.indexOf(cellA), 1, cellB);
+  //calculate number of moves it takes to get to clicked cell
+  // let newMoves = null;
+  // let cellDiff = Math.abs(cellB - cellA);
+  // //if moving within 'free' column count as 1 move only
+  // if (document.getElementById(cellA).getAttribute('data-celltype') === '5' && clickedCell.getAttribute('data-celltype') === '5') {
+  //   newMoves = 1;
+  // }
+  // else if (cellDiff % cols === 0) {
+  //   newMoves = cellDiff / cols;
+  // } else {
+  //   cellA = cellA % cols;
+  //   cellB = cellB % cols;
+  //   newMoves = Math.abs(cellB - cellA);
+  // }
+  // moveCount = moveCount + newMoves;
+  // for (b = 0; b < 2; b++) {
+  //   statsMovesLeft[b].textContent = maxMoves - moveCount;
+  // }
+  //check if clicked cell is an end cell and marker is not moving within start cells...
+  //reveal bug name
+  //make marker unmoveable in subsequent turns and
+  //add points (check if points = maxPoints and end game)
+  // if (clickedCell.getAttribute('data-celltype') === '0') {
+  // if (markers[z].endCells.indexOf(markers[z].currentCell) >= 0 && markers[z].endCells.indexOf(markers[z].prevCell) === -1) {
+  //   activeRow = Number(clickedCell.getAttribute('data-rownumber'));
+  //   clickedCell.style.fontSize = '100%';
+  //   clickedCell.textContent = bugs[activeRow];
+  //   activeMarker.removeEventListener('click', clickMarker);
+  //   activeMarker.style.cursor = 'default';
+  //   markersAtEnd.push(z);
+  //   updatedPoints = ++points['p' + activePlayer];
+  //   document.getElementById('p' + activePlayer + 'Points').textContent = updatedPoints;
+  //   if (updatedPoints === maxPoints) {
+  //     // document.getElementById('winner').textContent = 'PLAYER ' + activePlayer + ' WINS!'
+  //     // for (j = 0; j < totalMarkers; j++) {
+  //     //   let token = document.getElementById('m' + j);
+  //     //   token.removeEventListener('click', clickMarker);
+  //     //   token.style.cursor = 'default';
+  //     // }
+  //     removeMarkerClickEvent(0, totalMarkers);
+  //   }
+  // }
+  // if (moveCount === 3 && updatedPoints < maxPoints) {
+  //   swapPlayers();
+  // } else {
+  //   if (activePlayer === 1) {
+  //     addMarkerClickEvent(0, halfOfMarkers);
+  //   } else {
+  //     addMarkerClickEvent(halfOfMarkers, totalMarkers);
+  //   }
+  // }
 }
 
 function swapPlayers() {
   if (activePlayer === 1) {
-    for (i = 0; i < totalMarkers; i++) {
-      let token = document.getElementById('m' + i);
-      if (i < halfOfMarkers) {
-        token.removeEventListener('click', clickMarker);
-        token.style.cursor = 'default';
-      } else if (markersAtTarget.indexOf(i) < 0) {
-        token.addEventListener('click', clickMarker);
-        token.style.cursor = 'pointer';
-      }
-    }
+    removeMarkerClickEvent(0, halfOfMarkers);
+    addMarkerClickEvent(halfOfMarkers, totalMarkers);
+    // for (i = 0; i < totalMarkers; i++) {
+    //   let token = document.getElementById('m' + i);
+    //   if (i < halfOfMarkers) {
+    //     token.removeEventListener('click', clickMarker);
+    //     token.style.cursor = 'default';
+    //   } else if (markersAtEnd.indexOf(i) < 0) {
+    //     token.addEventListener('click', clickMarker);
+    //     token.style.cursor = 'pointer';
+    //   }
+    // }
     player1.style.textDecoration = 'none';
     player2.style.textDecoration = 'underline';
     statsPlayer1.style.visibility = 'hidden';
     statsPlayer2.style.visibility = 'visible';
     activePlayer = 2;
   } else {
-    for (i = 0; i < totalMarkers; i++) {
-      let token = document.getElementById('m' + i);
-      if (i < halfOfMarkers && markersAtTarget.indexOf(i) < 0) {
-        token.addEventListener('click', clickMarker);
-        token.style.cursor = 'pointer';
-      } else {
-        token.removeEventListener('click', clickMarker);
-        token.style.cursor = 'default';
-      }
-    }
+    removeMarkerClickEvent(halfOfMarkers, totalMarkers);
+    addMarkerClickEvent(0, halfOfMarkers);
+    // for (i = 0; i < totalMarkers; i++) {
+    //   let token = document.getElementById('m' + i);
+    //   if (i < halfOfMarkers && markersAtEnd.indexOf(i) < 0) {
+    //     token.addEventListener('click', clickMarker);
+    //     token.style.cursor = 'pointer';
+    //   } else {
+    //     token.removeEventListener('click', clickMarker);
+    //     token.style.cursor = 'default';
+    //   }
+    // }
     player1.style.textDecoration = 'underline';
     player2.style.textDecoration = 'none';
     statsPlayer1.style.visibility = 'visible';

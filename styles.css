@@ -181,6 +181,8 @@ body {
   background-color: rgb(230, 230, 230);
   background-position: center;
   background-repeat: no-repeat;
+  user-select: none;
+  /* -webkit-user-select: none; */
 }
 #grid .cellText {
   display: none;
@@ -194,7 +196,11 @@ body {
   background-color: rgba(0, 0, 0, 0.8);
   pointer-events: none;
 }
-#grid .cell:hover .cellText {
+#grid .cellHome {
+  font-size: 200%;
+  font-weight: bold;
+}
+#grid .cellOther:hover .cellText {
   display: flex;
 }
 
