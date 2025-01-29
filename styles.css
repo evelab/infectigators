@@ -203,6 +203,16 @@ body {
 #grid .cellOther:hover .cellText {
   display: flex;
 }
+#grid .cellFlash {
+  /* background-color: rgb(220, 243, 239); */
+  transition: background-color 0.4s linear;
+  animation: flash 0.8s 0.4s 1;
+}
+@keyframes flash {
+  50% {
+    background-color:rgb(230, 230, 230);
+  }
+}
 
 /* modifiers for tablet (in landscape mode) */
 @media only screen and (min-width: 941px) and (max-width: 1279px) {

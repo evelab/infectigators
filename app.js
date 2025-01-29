@@ -347,6 +347,7 @@ function clickCell(e) {
         for (i = 0; i < cols; i++) {
           let cell = document.getElementById(i + (activeRow * cols));
           cell.style.backgroundColor = 'rgb(220, 243, 239)';
+          cell.className += ' cellFlash';
           if (i === 0 || i === cols - 1) {
             cell.style.fontSize = '100%';
             cell.textContent = bugs[activeRow];
