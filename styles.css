@@ -5,7 +5,8 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Quicksand', sans-serif;
-  font-size: 1em;
+  /* font-size: 1em; */
+  font-size: 0.86em;
 }
 
 #lockscreen {
@@ -22,9 +23,12 @@ body {
 }
 
 #instructions {
+  /* display: none; */
   position: relative;
-  width: 800px;
-  height: 75%;
+  /* width: 800px;
+  height: 75%; */
+  width: 92%;
+  height: 86%;
   padding: 2% 3%;
   font-size: 110%;
   color: rgb(255, 255, 255);
@@ -34,6 +38,22 @@ body {
   overflow-y: auto;
   scrollbar-color: rgb(60, 60, 60) transparent;
 }
+#rotatePrompt {
+  z-index: 1;
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  font-size: 120%;
+  color: rgb(255, 255, 255);
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0);
+  overflow-y: hidden;
+}
 /* #instructionsTop {
   display: flex;
   justify-content: right;
@@ -42,8 +62,10 @@ body {
 
 .button {
   position: absolute;
-  width: 40px;
-  height: 40px;
+  /* width: 40px;
+  height: 40px; */
+  width: 30px;
+  height: 30px;
   background-color: transparent;
   background-position: center;
   background-repeat: no-repeat;
@@ -79,7 +101,8 @@ body {
 }
 
 #topdiv {
-  display: flex;
+  /* display: flex; */
+  display: none;
   flex: 2 0 60px;
   width: 100%;
   justify-content: center;
@@ -92,11 +115,13 @@ body {
 
 #stats {
   display: flex;
-  flex: 1 0 60px;
+  /* flex: 1 0 60px; */
+  flex: 1 0 40px;
   width: 100%;
   justify-content: center;
   align-items: center;
-  font-size: 120%;
+  /* font-size: 120%; */
+  font-size: 130%;
 }
 #statsPlayerOne {
   flex: 1 0 60px;
@@ -126,13 +151,16 @@ body {
 
 #buttons {
   position: relative;
-  flex: 0 0 60px;
+  /* flex: 0 0 60px; */
+  flex: 0 0 16px;
   width: 100%;
 }
 
 #gameBoard {
-  width: 1200px;
-  flex: 0 0 530px;
+  /* width: 1200px;
+  flex: 0 0 530px; */
+  width: 90%;
+  flex: 0 0 60%;
   /* border-radius: 10px; */
 }
 
@@ -148,7 +176,8 @@ body {
   padding: 12px 4px;
   margin: 0;
   text-align: center;
-  font-size: 110%;
+  /* font-size: 110%; */
+  font-size: 90%;
 }
 
 #grid {
@@ -200,8 +229,11 @@ body {
   font-size: 200%;
   font-weight: bold;
 }
-#grid .cellOther:hover .cellText {
-  display: flex;
+/* add hover effect to button on hover enabled devices only */
+@media (hover: hover) {
+  #grid .cellOther:hover .cellText {
+    display: flex;
+  }
 }
 #grid .cellFlash {
   /* background-color: rgb(220, 243, 239); */
@@ -214,7 +246,7 @@ body {
   }
 }
 
-/* modifiers for tablet (in landscape mode) */
+/* modifiers for larger screens (e.g. tablet) in landscape mode */
 @media only screen and (min-width: 941px) and (max-width: 1279px) {
   html,
   body {
@@ -223,7 +255,7 @@ body {
 
   #instructions {
     width: 80%;
-    font-size: 110%;
+    /* font-size: 110%; */
   }
 
   #stats {
@@ -232,8 +264,6 @@ body {
   }
 
   #gameBoard {
-    /* width: 660px;
-    flex: 0 0 215px; */
     width: 90%;
     flex: 0 0 60%;
   }
@@ -243,47 +273,43 @@ body {
   }
 }
 
-/* modifiers for phone (in landscape mode) */
-@media only screen and (max-width: 940px) {
+/* modifiers for biggest screens (e.g. laptops) */
+@media only screen and (min-width: 1280px) {
   html,
   body {
-    font-size: 0.86em;
+    font-size: 1em;
   }
 
-  /* #lockscreen {
-    position: absolute;
-  } */
-
   #instructions {
-    width: 92%;
-    height: 86%;
-    font-size: 110%;
+    width: 800px;
+    height: 75%;
+    /* font-size: 110%; */
   }
 
   .button {
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
   }
 
   #topdiv {
-    display: none;
+    display: flex;
   }
 
   #stats {
-    flex: 1 0 40px;
-    font-size: 130%;
+    flex: 1 0 60px;
+    font-size: 120%;
   }
 
   #buttons {
-    flex: 0 0 16px;
+    flex: 0 0 60px;
   }
 
   #gameBoard {
-    width: 90%;
-    flex: 0 0 60%;
+    width: 1200px;
+    flex: 0 0 530px;
   }
 
   #columnHeaders .headerText {
-    font-size: 90%;
+    font-size: 110%;
   }
 }

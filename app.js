@@ -1,6 +1,8 @@
 const lockscreen = document.getElementById('lockscreen');
+const rotatePrompt = document.getElementById('rotatePrompt');
+
 function instructionsDisplay() {
-  if(lockscreen.style.display == 'flex') {
+  if(lockscreen.style.display == 'flex') {;
     lockscreen.style.display = 'none';
   } else {
     lockscreen.style.display = 'flex';
@@ -22,7 +24,7 @@ const cellTypes = {
 };
 
 //define board size (i.e. number of cells in grid), cell types (i.e. diseases, symptoms, etc.) and other game parameters
-const gameBoard = document.getElementById('gameBoard');
+let currentClientWidth;
 const grid = document.getElementById('grid');
 const rows = 5;
 const cols = 11;
@@ -92,85 +94,122 @@ const statsPlayer2 = document.getElementById('statsPlayerTwo');
 const player1 = document.getElementById('playerOne');
 const player2 = document.getElementById('playerTwo');
 
-//create grid cells and add event listener for mouse click... clickCell() function
-let j = 0;
-let k = 0;
-let currentClientWidth = grid.clientWidth;
-let cellWidth = Math.round((currentClientWidth - 110) / cols);
-let cellWidthPx = cellWidth + 'px';
-for (i = 0; i < cells; i++) {
-  let cell = document.createElement('div');
-  cell.id = i;
-  cell.className = 'cell';
-  cell.style.width = cellWidthPx;
-  cell.style.height = cellWidthPx;
-  let cellText = document.createElement('div');
-  cellText.className = 'cellText';
-  if (firstCol.indexOf(i) > 0) {
-    j++;
-    k = 0;
-  }
-  cell.setAttribute('data-rownumber', j);
-  cell.setAttribute('data-celltype', uniqueCellTypes.indexOf(cellTypes[bugs[j]][k]));
-  if (homeCells.indexOf(i) > -1) {
-    cell.textContent = '?';
-    cell.className += ' cellHome';
-  }
-  else {
-    cell.className += ' cellOther';
-    cell.style.backgroundImage = 'url("assets/icons/' + cellTypes[bugs[j]][k] + '.svg")';
-    cellText.textContent = cellTypes[bugs[j]][k];
-  }
-  grid.appendChild(cell);
-  cell.appendChild(cellText);
-  k++;
+let screenOrientation = screen.orientation.type.substring(0,9);
+if (screenOrientation !== 'landscape') {
+  rotatePrompt.style.display = 'flex';
+} else {
+  //create game board and markers only if device is in landscape mode
+  rotatePrompt.style.display = 'none';
+  buildGame();
 }
 
-//create headers for grid
-//adjust width of header based on number of columns in a given category
-const columnHeaders = document.getElementById('columnHeaders');
-const headersLength = headers.length;
-for (i = 0; i < headersLength; i++) {
-  let header = document.createElement('div');
-  header.id = 'h' + i;
-  header.className = 'headerText';
-  let ht = headers[i];
-  if (ht === 'Prevention' || ht === 'Symptoms') {
-    header.style.width = cellWidth * 2 + 8 + 'px';
+screen.orientation.addEventListener('change', function() {
+  screenOrientation = screen.orientation.type.substring(0,9);
+  if (screenOrientation !== 'landscape') {
+    document.getElementById('gameArea').style.display = 'none';
+    rotatePrompt.style.display = 'flex';
   } else {
-    header.style.width = cellWidth + 'px';
+    document.getElementById('gameArea').style.display = 'flex';
+    rotatePrompt.style.display = 'none';
+    }
+    if (currentClientWidth === undefined) {
+      //create game board and markers only if device is in landscape mode
+      location.reload(); //reload page to get correct grid size
+      buildGame();
   }
-  header.textContent = ht;
-  columnHeaders.appendChild(header);
+});
+
+function buildGame() {
+  //create grid cells and add event listener for mouse click... clickCell() function
+  let j = 0;
+  let k = 0;
+  currentClientWidth = grid.clientWidth;
+  let cellWidth = Math.round((currentClientWidth - 110) / cols);
+  let cellWidthPx = cellWidth + 'px';
+  for (i = 0; i < cells; i++) {
+    let cell = document.createElement('div');
+    cell.id = i;
+    cell.className = 'cell';
+    cell.style.width = cellWidthPx;
+    cell.style.height = cellWidthPx;
+    let cellText = document.createElement('div');
+    cellText.className = 'cellText';
+    if (firstCol.indexOf(i) > 0) {
+      j++;
+      k = 0;
+    }
+    cell.setAttribute('data-rownumber', j);
+    cell.setAttribute('data-celltype', uniqueCellTypes.indexOf(cellTypes[bugs[j]][k]));
+    if (homeCells.indexOf(i) > -1) {
+      cell.textContent = '?';
+      cell.className += ' cellHome';
+    }
+    else {
+      cell.className += ' cellOther';
+      cell.style.backgroundImage = 'url("assets/icons/' + cellTypes[bugs[j]][k] + '.svg")';
+      cellText.textContent = cellTypes[bugs[j]][k];
+      cell.addEventListener('touchstart', showCellText);
+    }
+    grid.appendChild(cell);
+    cell.appendChild(cellText);
+    k++;
+  }
+
+  //create headers for grid
+  //adjust width of header based on number of columns in a given category
+  const columnHeaders = document.getElementById('columnHeaders');
+  const headersLength = headers.length;
+  for (i = 0; i < headersLength; i++) {
+    let header = document.createElement('div');
+    header.id = 'h' + i;
+    header.className = 'headerText';
+    let ht = headers[i];
+    if (ht === 'Prevention' || ht === 'Symptoms') {
+      header.style.width = cellWidth * 2 + 8 + 'px';
+    } else {
+      header.style.width = cellWidth + 'px';
+    }
+    header.textContent = ht;
+    columnHeaders.appendChild(header);
+  }
+
+  //create markers
+  let markerWidth = Math.round(((currentClientWidth - 110) / cols) / 2) + 'px';
+  for (i = 0; i < totalMarkers; i++) {
+    let token = document.createElement('div');
+    token.id = 'm' + i;
+    token.className = 'token';
+    token.style.width = markerWidth;
+    token.style.height = markerWidth;
+    let colour = i < halfOfMarkers ? 'rgba(255, 118, 0, 0.8)' : 'rgba(0, 108, 255, 0.8)';
+    let border = i < halfOfMarkers ? '2px solid rgba(255, 118, 0, 1)' : '2px solid rgba(0, 108, 255, 1)';
+    let start = i < halfOfMarkers ? homeCells.slice(0, rows) : homeCells.slice(rows, rows*2);
+    let end = i < halfOfMarkers ? homeCells.slice(rows, rows*2) : homeCells.slice(0, rows);
+    token.style.backgroundColor = colour;
+    token.style.border = border;
+    //initial (home) position of each marker
+    let homeCell = homeCells[i];
+    let cell = document.getElementById(homeCell);
+    let x = cell.offsetLeft + Math.round(cell.offsetWidth / 4);
+    let y = cell.offsetTop + Math.round(cell.offsetHeight / 4);
+    token.style.left = x + 'px';
+    token.style.top = y + 'px';
+    //make marker clickable and add to grid
+    token.style.cursor = 'pointer';
+    token.addEventListener('click', clickMarker);
+    grid.appendChild(token);
+    let markerObject = {marker:token, currentCell:homeCell, prevCell:homeCell, tokenColour:colour, startCells:start, endCells:end};
+    markers.push(markerObject);
+  }
 }
 
-//create markers
-let markerWidth = Math.round(((currentClientWidth - 110) / cols) / 2) + 'px';
-for (i = 0; i < totalMarkers; i++) {
-  let token = document.createElement('div');
-  token.id = 'm' + i;
-  token.className = 'token';
-  token.style.width = markerWidth;
-  token.style.height = markerWidth;
-  let colour = i < halfOfMarkers ? 'rgba(255, 118, 0, 0.8)' : 'rgba(0, 108, 255, 0.8)';
-  let border = i < halfOfMarkers ? '2px solid rgba(255, 118, 1)' : '2px solid rgba(0, 108, 255, 1)';
-  let start = i < halfOfMarkers ? homeCells.slice(0, rows) : homeCells.slice(rows, rows*2);
-  let end = i < halfOfMarkers ? homeCells.slice(rows, rows*2) : homeCells.slice(0, rows);
-  token.style.backgroundColor = colour;
-  token.style.border = border;
-  //initial (home) position of each marker
-  let homeCell = homeCells[i];
-  let cell = document.getElementById(homeCell);
-  let x = cell.offsetLeft + Math.round(cell.offsetWidth / 4);
-  let y = cell.offsetTop + Math.round(cell.offsetHeight / 4);
-  token.style.left = x + 'px';
-  token.style.top = y + 'px';
-  //make marker clickable and add to grid
-  token.style.cursor = 'pointer';
-  token.addEventListener('click', clickMarker);
-  grid.appendChild(token);
-  let markerObject = {marker:token, currentCell:homeCell, prevCell:homeCell, tokenColour:colour, startCells:start, endCells:end};
-  markers.push(markerObject);
+//touch screens only: show cell text when touching cell
+function showCellText(e) {
+  let cellText = e.target.children[0];
+  cellText.style.display = 'flex';
+  setTimeout(function() {
+    cellText.style.display = 'none';
+  }, 1000)
 }
 
 //remove click events from all cells (when clicking on marker and after moving marker)
