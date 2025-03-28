@@ -1,5 +1,7 @@
-const lockscreen = document.getElementById('lockscreen');
 const rotatePrompt = document.getElementById('rotatePrompt');
+const startScreen = document.getElementById('startScreen');
+const gameArea = document.getElementById('gameArea');
+const lockscreen = document.getElementById('lockscreen');
 
 function instructionsDisplay() {
   if(lockscreen.style.display == 'flex') {;
@@ -29,7 +31,7 @@ const grid = document.getElementById('grid');
 const rows = 5;
 const cols = 11;
 const cells = rows * cols;
-const headers = ['Home', 'Vector', 'Transmission', 'Prevention', 'Free', 'Symptoms', 'Treatment', 'Agent', 'Home'];
+const headers = ['', 'Vector', 'Transmission', 'Prevention', '', 'Symptoms', 'Treatment', 'Agent', ''];
 const homeCells = []; //index of 'home' cells (i.e. start and end cells)
 for (i = 0; i < rows; i++) {
   homeCells.splice(i, 0, cols * i); //player 1 home cells
@@ -94,37 +96,56 @@ const statsPlayer2 = document.getElementById('statsPlayerTwo');
 const player1 = document.getElementById('playerOne');
 const player2 = document.getElementById('playerTwo');
 
+//when first arriving at page, check screen orientation and show appropriate screen
 let screenOrientation = screen.orientation.type.substring(0,9);
-if (screenOrientation !== 'landscape') {
-  rotatePrompt.style.display = 'flex';
-} else {
+if (screenOrientation === 'landscape') {
   //create game board and markers only if device is in landscape mode
   rotatePrompt.style.display = 'none';
+  startScreen.style.display = 'flex';
+}
+
+const screenWidth = window.screen.width;
+//for start position of tokens
+let tokenOffset = 4;
+//for "let's play" button
+function playGame() {
+  if (screenWidth < 941) {
+    //use fullscreen for smallest devices (i.e. mobile phones)
+    document.body.requestFullscreen();
+    tokenOffset = 1.6;
+  }
+  startScreen.style.display = 'none';
+  gameArea.style.display = 'flex';
   buildGame();
 }
 
 screen.orientation.addEventListener('change', function() {
   screenOrientation = screen.orientation.type.substring(0,9);
   if (screenOrientation !== 'landscape') {
-    document.getElementById('gameArea').style.display = 'none';
+    startScreen.style.display = 'none';
+    gameArea.style.display = 'none';
     rotatePrompt.style.display = 'flex';
   } else {
-    document.getElementById('gameArea').style.display = 'flex';
     rotatePrompt.style.display = 'none';
-    }
     if (currentClientWidth === undefined) {
       //create game board and markers only if device is in landscape mode
-      location.reload(); //reload page to get correct grid size
-      buildGame();
+      // location.reload(); //reload page to get correct grid size
+      // buildGame();
+      startScreen.style.display = 'flex';
+    } else {
+      gameArea.style.display = 'flex';
+    }
   }
 });
 
+//build the game after clicking "let's play!"
 function buildGame() {
   //create grid cells and add event listener for mouse click... clickCell() function
   let j = 0;
   let k = 0;
   currentClientWidth = grid.clientWidth;
-  let cellWidth = Math.round((currentClientWidth - 110) / cols);
+  // let cellWidth = Math.round((currentClientWidth - 110) / cols);
+  let cellWidth = Math.round((currentClientWidth - 140) / cols);
   let cellWidthPx = cellWidth + 'px';
   for (i = 0; i < cells; i++) {
     let cell = document.createElement('div');
@@ -165,9 +186,11 @@ function buildGame() {
     header.className = 'headerText';
     let ht = headers[i];
     if (ht === 'Prevention' || ht === 'Symptoms') {
-      header.style.width = cellWidth * 2 + 8 + 'px';
+      // header.style.width = cellWidth * 2 + 10 + 'px';
+      header.style.width = cellWidth * 2 + 17 + 'px';
     } else {
-      header.style.width = cellWidth + 'px';
+      // header.style.width = cellWidth + 'px';
+      header.style.width = cellWidth + 3 + 'px';
     }
     header.textContent = ht;
     columnHeaders.appendChild(header);
@@ -190,7 +213,7 @@ function buildGame() {
     //initial (home) position of each marker
     let homeCell = homeCells[i];
     let cell = document.getElementById(homeCell);
-    let x = cell.offsetLeft + Math.round(cell.offsetWidth / 4);
+    let x = cell.offsetLeft + Math.round(cell.offsetWidth / tokenOffset);
     let y = cell.offsetTop + Math.round(cell.offsetHeight / 4);
     token.style.left = x + 'px';
     token.style.top = y + 'px';
