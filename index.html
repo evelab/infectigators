@@ -7,8 +7,8 @@
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- <link href="https://fonts.googleapis.com/css2?family=Quicksand&display=swap" rel="stylesheet"> -->
-    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next&family=Boogaloo&display=swap" rel="stylesheet">
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next&family=Boogaloo&display=swap" rel="stylesheet"> -->
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@500;700&display=swap" rel="stylesheet">
     <link rel='stylesheet' href='styles.css' />
     <script defer type='text/javascript' src='app.js'></script>
   </head>
@@ -16,32 +16,25 @@
   <body>
 
     <div id='gameArea'>
-      <div id='topdiv'>
-        <span class='gameTitle'>Infectigators</span>
+      <div class='topGameArea'>
+        <span id='p1Points'>0</span>
+        <span>|</span>
+        <span id='p2Points'>0</span>
+        <button id='infoButton' class='button' onclick='instructionsDisplay()'></button>
       </div>
       <div id='gameBoard'>
         <div id='columnHeaders'></div>
         <div id='grid'></div>
       </div>
-      <div id='stats'>
-        <div id='statsPlayerOne'>
-          <span>[</span><span class='movesLeft'>3</span><span>&nbsp;moves left]</span>
+      <div class='bottomGameArea'>
+        <div id='playerOne' class='playerMoves'>
+          <span>Moves:</span>
+          <span id='p1Moves'>3</span>
         </div>
-        <div class='statsCenter'>
-          <span id='playerOne'>Player I</span>&nbsp;&nbsp;&nbsp;<span id='p1Points'>0</span>
+        <div id='playerTwo' class='playerMoves'>
+          <span>Moves:</span>
+          <span id='p2Moves'>3</span>
         </div>
-        <div class='statsCenter'>
-          <span>&nbsp;-&nbsp;</span>
-        </div>
-        <div class='statsCenter'>
-          <span id='p2Points'>0</span>&nbsp;&nbsp;&nbsp;<span id='playerTwo'>Player II</span>
-        </div>
-        <div id='statsPlayerTwo'>
-          <span>[</span><span class='movesLeft'>3</span><span>&nbsp;moves left]</span>
-        </div>
-      </div>
-      <div id='buttons'>
-        <button id='infoButton' class='button' onclick='instructionsDisplay()'></button>
       </div>
     </div>
 

@@ -91,10 +91,11 @@ const points = {
 
 //game stats
 const statsMovesLeft = document.getElementsByClassName('movesLeft');
-const statsPlayer1 = document.getElementById('statsPlayerOne');
-const statsPlayer2 = document.getElementById('statsPlayerTwo');
-const player1 = document.getElementById('playerOne');
-const player2 = document.getElementById('playerTwo');
+const playerOne = document.getElementById('playerOne');
+const playerTwo = document.getElementById('playerTwo');
+const p1Moves = document.getElementById('p1Moves');
+const p2Moves = document.getElementById('p2Moves');
+let movesLeft = 3;
 
 //when first arriving at page, check screen orientation and show appropriate screen
 let screenOrientation = screen.orientation.type.substring(0,9);
@@ -284,13 +285,11 @@ function clickMarker(e) {
     if (z < halfOfMarkers) {
       activePlayer = 1;
       removeMarkerClickEvent(halfOfMarkers, totalMarkers);
-      player1.style.textDecoration = 'underline';
-      statsPlayer1.style.visibility = 'visible';
+      playerOne.style.color = 'rgb(0, 0, 0)';
     } else {
       activePlayer = 2;
       removeMarkerClickEvent(0, halfOfMarkers);
-      player2.style.textDecoration = 'underline';
-      statsPlayer2.style.visibility = 'visible';
+      playerTwo.style.color = 'rgb(0, 0, 0)';
     }
   }
   //determine which moves are possible for the given player and marker
@@ -399,8 +398,11 @@ function clickCell(e) {
         newMoves = Math.abs(cellB - cellA);
       }
       moveCount = moveCount + newMoves;
-      for (b = 0; b < 2; b++) {
-        statsMovesLeft[b].textContent = maxMoves - moveCount;
+      movesLeft = maxMoves - moveCount;
+      if (activePlayer === 1) {
+        p1Moves.textContent = movesLeft;
+      } else {
+        p2Moves.textContent = movesLeft;
       }
       //check if clicked cell is an end cell and marker is not moving within start cells and...
       if (markers[z].endCells.indexOf(markers[z].currentCell) >= 0 && markers[z].endCells.indexOf(markers[z].prevCell) === -1) {
@@ -443,22 +445,17 @@ function swapPlayers() {
   if (activePlayer === 1) {
     removeMarkerClickEvent(0, halfOfMarkers);
     addMarkerClickEvent(halfOfMarkers, totalMarkers);
-    player1.style.textDecoration = 'none';
-    player2.style.textDecoration = 'underline';
-    statsPlayer1.style.visibility = 'hidden';
-    statsPlayer2.style.visibility = 'visible';
+    playerOne.style.color = 'rgb(140, 140, 140)';
+    playerTwo.style.color = 'rgb(0, 0, 0)';
     activePlayer = 2;
+    p2Moves.textContent = maxMoves;
   } else {
     removeMarkerClickEvent(halfOfMarkers, totalMarkers);
     addMarkerClickEvent(0, halfOfMarkers);
-    player1.style.textDecoration = 'underline';
-    player2.style.textDecoration = 'none';
-    statsPlayer1.style.visibility = 'visible';
-    statsPlayer2.style.visibility = 'hidden';
+    playerOne.style.color = 'rgb(0, 0, 0)';
+    playerTwo.style.color = 'rgb(140, 140, 140)';
     activePlayer = 1;
+    p1Moves.textContent = maxMoves;
   }
   moveCount = 0;
-  for (i = 0; i < 2; i++) {
-    statsMovesLeft[i].textContent = maxMoves;
-  }
 }

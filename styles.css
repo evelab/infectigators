@@ -4,11 +4,11 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
-  /* font-family: 'Quicksand', sans-serif; */
-  font-family: 'Atkinson Hyperlegible Next', sans-serif;
+  font-family: 'Barlow', sans-serif;
+  font-weight: 500;
   /* font-size: 1em; */
   font-size: 0.86em;
-  background-color: rgb(173, 216, 230);
+  background-color: rgb(178, 213, 232);
   /* overflow: auto; */
 }
 
@@ -61,16 +61,11 @@ body {
   text-align: center;
   justify-content: center;
   align-items: center;
-  background-color: rgb(173, 216, 230);
+  background-color: rgb(178, 213, 232);
 }
 .bigDivText {
   padding: 20%;
 }
-/* #instructionsTop {
-  display: flex;
-  justify-content: right;
-  width: 100%;
-} */
 
 .button {
   position: absolute;
@@ -90,13 +85,14 @@ body {
 }
 
 .button2 {
-  width: 120px;
-  height: 30px;
+  width: 160px;
+  height: 40px;
   background-color: rgb(255, 255, 255);
   border: none;
-  border-radius: 20px;
-  font-family: 'Boogaloo', sans-serif;
+  border-radius: 30px;
+  /* font-family: 'Boogaloo', sans-serif; */
   font-size: 120%;
+  font-weight: 700;
 }
 .button2:hover {
   cursor: pointer;
@@ -109,12 +105,45 @@ body {
   background-image: url('assets/icons/close.svg');
 }
 
+.topGameArea {
+  display: flex;
+  flex: 2 0 auto;
+  width: 100%;
+  padding-top: 8px;
+  justify-content: center;
+}
+.topGameArea > span {
+  min-width: 26px;
+  margin-bottom: -16px;
+  font-size: 200%;
+  font-weight: 700;
+  text-align: center;
+}
 #infoButton {
   /* position: absolute; */
-  bottom: 20px;
-  right: 20px;
+  /* top: 10px; */
+  right: 30px;
   background-image: url('assets/icons/info.svg');
 }
+
+.bottomGameArea {
+  display: flex;
+  flex: 2 0 auto;
+  width: 100%;
+  padding-top: 8px;
+  justify-content: space-evenly;
+}
+.playerMoves {
+  display: flex;
+  font-size: 200%;
+  font-weight: 700;
+  color:rgb(140, 140, 140);
+}
+.playerMoves > span {
+  min-width: 30px;
+  text-align: center;
+}
+
 
 #gameArea {
   display: none;
@@ -126,61 +155,10 @@ body {
   align-items: center;
 }
 
-#topdiv {
-  /* display: flex; */
-  display: none;
-  flex: 2 0 60px;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-}
 .gameTitle {
   font-size: 300%;
-  font-weight: bold;
-  font-family: 'Boogaloo', sans-serif;
-}
-
-#stats {
-  display: flex;
-  /* flex: 1 0 60px; */
-  flex: 1 0 40px;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-  /* font-size: 120%; */
-  font-size: 130%;
-}
-#statsPlayerOne {
-  flex: 1 0 60px;
-  padding-right: 16px;
-  text-align: right;
-  visibility: hidden;
-  color:rgb(90, 90, 90);
-}
-#playerOne {
-  color: rgb(255, 118, 0);
-  text-decoration: none;
-}
-.statsCenter {
-  padding: 0 12px;
-  text-align: center;
-}
-#statsPlayerTwo {
-  flex: 1 0 60px;
-  padding-left: 16px;
-  visibility: hidden;
-  color:rgb(90, 90, 90);
-}
-#playerTwo {
-  color: rgb(0, 108, 255);
-  text-decoration: none;
-}
-
-#buttons {
-  position: relative;
-  /* flex: 0 0 60px; */
-  flex: 0 0 16px;
-  width: 100%;
+  font-weight: 700;
+  /* font-family: 'Boogaloo', sans-serif; */
 }
 
 #gameBoard {
@@ -200,12 +178,12 @@ body {
 }
 #columnHeaders .headerText {
   position: relative;
-  padding: 12px 4px;
+  padding: 0 4px 12px;
   margin: 0;
   text-align: center;
   /* font-size: 110%; */
   font-size: 90%;
-  font-weight: bold;
+  font-weight: 700;
 }
 
 #grid {
@@ -259,7 +237,7 @@ body {
 }
 #grid .cellHome {
   font-size: 200%;
-  font-weight: bold;
+  font-weight: 700;
 }
 /* add hover effect to button on hover enabled devices only */
 @media (hover: hover) {
@@ -295,10 +273,10 @@ body {
     font-size: 130%;
   }
 
-  #gameBoard {
+  /* #gameBoard {
     width: 90%;
     flex: 0 0 60%;
-  }
+  } */
 
   #columnHeaders .headerText {
     font-size: 100%;
@@ -329,11 +307,11 @@ body {
   }
 
   .button2 {
-    width: 160px;
+    width: 220px;
     height: 60px;
   }
 
-  #topdiv {
+  #topGameArea {
     display: flex;
   }
 
@@ -348,7 +326,7 @@ body {
 
   #gameBoard {
     width: 1200px;
-    flex: 0 0 530px;
+    flex: 0 0 auto;
   }
 
   #columnHeaders .headerText {
