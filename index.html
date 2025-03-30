@@ -2,7 +2,7 @@
 <html lang='en'>
 
   <head>
-    <title>Disease Discovery</title>
+    <title>Infectigators</title>
     <meta charset='utf-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,6 +14,21 @@
   </head>
 
   <body>
+
+    <div id='rotatePrompt' class='bigDiv'>
+      <div class='bigDivText'>
+        <p class='h1'>Infectigators</p>
+        <p>Rotate your device to landscape to play!</p>
+      </div>
+    </div>
+
+    <div id='startScreen' class='bigDiv'>
+      <div class='bigDivText'>
+        <p class='h1'>Infectigators</p>
+        <p>Race against your opponent to identify illnesses, and learn about their causes, symptoms and treatments</p>
+        <button id='playButton' class='button2' onclick='playGame()'>Let's play!</button>
+      </div>
+    </div>
 
     <div id='gameArea'>
       <div class='topGameArea'>
@@ -38,31 +53,18 @@
       </div>
     </div>
 
-    <div id='lockscreen'>
+    <div id='lockScreen'>
       <div id='instructions'>
         <!-- <div id='instructionsTop'> -->
         <button id='closeButton' class='button' onclick='instructionsDisplay()'></button>
         <!-- </div> -->
-        <p class='gameTitle'>How to play</p>
+        <p class='h1'>How to play</p>
         <p>First player to get three pieces to the opposite 'Home' side wins!</p>
         <p>In each turn, players can move their pieces 3 times. Moves can be split amongst any of their pieces in play in whichever way they like: one piece 3 times, or 3 different pieces each once.</p>
         <p>Pieces can move forward, or sideways if an adjacent square has a symbol that matches their current square. Pieces cannot move backwards.</p>
         <p>If a player encounters a piece of the other player, neither piece can move forward and may be blocked if they can't move sideways either.</p>
         <p>Within the 'Free' lane, a player can move their piece to any unoccupied square.</p>
         <p>Players can only land on the 'Home' square if it is unoccupied by the other player.</p>
-      </div>
-    </div>
-    <div id='rotatePrompt' class='bigDiv'>
-      <div class='bigDivText'>
-        <p class='gameTitle'>Infectigators</p>
-        <p>Rotate your device to landscape to play!</p>
-      </div>
-    </div>
-    <div id='startScreen' class='bigDiv'>
-      <div class='bigDivText'>
-        <p class='gameTitle'>Infectigators</p>
-        <p>Race against your opponent to identify illnesses, and learn about their causes, symptoms and treatments</p>
-        <button id='playButton' class='button2' onclick='playGame()'>Let's play!</button>
       </div>
     </div>
 

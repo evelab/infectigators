@@ -1,13 +1,13 @@
 const rotatePrompt = document.getElementById('rotatePrompt');
 const startScreen = document.getElementById('startScreen');
 const gameArea = document.getElementById('gameArea');
-const lockscreen = document.getElementById('lockscreen');
+const lockScreen = document.getElementById('lockScreen');
 
 function instructionsDisplay() {
-  if(lockscreen.style.display == 'flex') {;
-    lockscreen.style.display = 'none';
+  if(lockScreen.style.display == 'flex') {;
+    lockScreen.style.display = 'none';
   } else {
-    lockscreen.style.display = 'flex';
+    lockScreen.style.display = 'flex';
   }
 }
 
@@ -90,7 +90,6 @@ const points = {
 };
 
 //game stats
-const statsMovesLeft = document.getElementsByClassName('movesLeft');
 const playerOne = document.getElementById('playerOne');
 const playerTwo = document.getElementById('playerTwo');
 const p1Moves = document.getElementById('p1Moves');
