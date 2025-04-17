@@ -197,31 +197,36 @@ function buildGame() {
   }
 
   //create markers
-  let markerWidth = Math.round(((currentClientWidth - 110) / cols) / 2) + 'px';
+  // let markerWidth = Math.round(((currentClientWidth - 110) / cols) / 2) + 'px';
+  let markerWidth = Math.round((currentClientWidth - 140) / cols) + 'px';
   for (i = 0; i < totalMarkers; i++) {
     let token = document.createElement('div');
     token.id = 'm' + i;
     token.className = 'token';
     token.style.width = markerWidth;
     token.style.height = markerWidth;
-    let colour = i < halfOfMarkers ? 'rgba(255, 118, 0, 0.8)' : 'rgba(0, 108, 255, 0.8)';
-    let border = i < halfOfMarkers ? '2px solid rgba(255, 118, 0, 1)' : '2px solid rgba(0, 108, 255, 1)';
+    // let colour = i < halfOfMarkers ? 'rgba(255, 118, 0, 0.8)' : 'rgba(0, 108, 255, 0.8)';
+    // let border = i < halfOfMarkers ? '2px solid rgba(255, 118, 0, 1)' : '2px solid rgba(0, 108, 255, 1)';
     let start = i < halfOfMarkers ? homeCells.slice(0, rows) : homeCells.slice(rows, rows*2);
     let end = i < halfOfMarkers ? homeCells.slice(rows, rows*2) : homeCells.slice(0, rows);
-    token.style.backgroundColor = colour;
-    token.style.border = border;
+    // token.style.backgroundColor = colour;
+    // token.style.border = border;
     //initial (home) position of each marker
     let homeCell = homeCells[i];
     let cell = document.getElementById(homeCell);
-    let x = cell.offsetLeft + Math.round(cell.offsetWidth / tokenOffset);
-    let y = cell.offsetTop + Math.round(cell.offsetHeight / 4);
+    // let x = cell.offsetLeft + Math.round(cell.offsetWidth / tokenOffset);
+    // let y = cell.offsetTop + Math.round(cell.offsetHeight / 4);
+    let x = cell.offsetLeft + Math.round(cell.offsetWidth / 2.5);
+    let y = cell.offsetTop + Math.round(cell.offsetHeight / 60);
     token.style.left = x + 'px';
     token.style.top = y + 'px';
     //make marker clickable and add to grid
     token.style.cursor = 'pointer';
     token.addEventListener('click', clickMarker);
     grid.appendChild(token);
-    let markerObject = {marker:token, currentCell:homeCell, prevCell:homeCell, tokenColour:colour, startCells:start, endCells:end};
+    // let markerObject = {marker:token, currentCell:homeCell, prevCell:homeCell, tokenColour:colour, startCells:start, endCells:end};
+    // markers.push(markerObject);
+    let markerObject = {marker:token, currentCell:homeCell, prevCell:homeCell, startCells:start, endCells:end};
     markers.push(markerObject);
   }
 }
@@ -292,7 +297,7 @@ function clickMarker(e) {
     }
   }
   //determine which moves are possible for the given player and marker
-  activeMarker.style.backgroundColor = z < halfOfMarkers ? 'rgba(255, 118, 0, 1)' : 'rgba(0, 108, 255, 1)';
+  // activeMarker.style.backgroundColor = z < halfOfMarkers ? 'rgba(255, 118, 0, 1)' : 'rgba(0, 108, 255, 1)';
   let m = (maxMoves - moveCount);
   let moves = allowedMoves['p' + activePlayer];
   let currentCellType = document.getElementById(markers[z].currentCell).getAttribute('data-celltype');
@@ -357,8 +362,10 @@ function clickCell(e) {
   markers[z].prevCell = cellA;
   let cellB = Number(clickedCell.id);
   markers[z].currentCell = cellB;
-  let targetX = clickedCell.offsetLeft + Math.round(clickedCell.offsetWidth / 4);
-  let targetY = clickedCell.offsetTop + Math.round(clickedCell.offsetHeight / 4);
+  // let targetX = clickedCell.offsetLeft + Math.round(clickedCell.offsetWidth / 4);
+  // let targetY = clickedCell.offsetTop + Math.round(clickedCell.offsetHeight / 4);
+  let targetX = clickedCell.offsetLeft + Math.round(clickedCell.offsetWidth / 20);
+  let targetY = clickedCell.offsetTop + Math.round(clickedCell.offsetHeight / 60);
   let mm = null;
   let x = activeMarker.offsetLeft;
   let y = activeMarker.offsetTop;
@@ -380,7 +387,7 @@ function clickCell(e) {
       activeMarker.style.top = y + 'px';
     } else {
       clearInterval(mm);
-      activeMarker.style.backgroundColor = markers[z].tokenColour;
+      // activeMarker.style.backgroundColor = markers[z].tokenColour;
       occupiedCells.splice(occupiedCells.indexOf(cellA), 1, cellB);
       //calculate number of moves it takes to get to clicked cell
       let newMoves = null;

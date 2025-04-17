@@ -9,6 +9,9 @@ body {
   /* font-size: 1em; */
   font-size: 0.86em;
   background-color: rgb(178, 213, 232);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url('assets/other/background_02.svg');
   /* overflow: auto; */
 }
 
@@ -26,19 +29,42 @@ body {
 }
 
 #instructions {
-  /* display: none; */
   position: relative;
-  /* width: 800px;
-  height: 75%; */
-  width: 80%;
-  height:80%;
-  padding: 2% 3%;
+  width: 560px;
+  aspect-ratio: 16/9.5;
   font-size: 110%;
   color: rgb(0, 0, 0);
-  background-color: rgba(230, 230, 230);
-  border-radius: 10px;
-  overflow-y: auto;
+  background-size: auto 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url('assets/other/folder.svg');
+  overflow: hidden;
   scrollbar-color: rgb(60, 60, 60) transparent;
+}
+.h1 {
+  font-size: 300%;
+  font-weight: 700;
+}
+.folderText {
+  padding: 20px 45% 0 50px;
+}
+.button {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  background-color: rgba(0, 0, 0, 0.4);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 90%;
+  border: none;
+  border-radius: 50%;
+}
+.button:hover {
+  cursor: pointer;
+}
+#closeButton {
+  top: 7px;
+  right: 9px;
 }
 
 #rotatePrompt {
@@ -47,6 +73,9 @@ body {
 
 #startScreen {
   display: none;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url('assets/other/background_02.svg');
 }
 
 .bigDiv {
@@ -67,29 +96,6 @@ body {
   padding: 20%;
 }
 
-.h1 {
-  font-size: 300%;
-  font-weight: 700;
-  /* font-family: 'Boogaloo', sans-serif; */
-}
-
-.button {
-  position: absolute;
-  /* width: 40px;
-  height: 40px; */
-  width: 30px;
-  height: 30px;
-  background-color: transparent;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: 90%;
-  border: none;
-  border-radius: 50%;
-}
-.button:hover {
-  cursor: pointer;
-}
-
 .button2 {
   width: 160px;
   height: 40px;
@@ -104,18 +110,11 @@ body {
   cursor: pointer;
 }
 
-#closeButton {
-  /* position: fixed; */
-  top: 20px;
-  right: 20px;
-  background-image: url('assets/icons/close.svg');
-}
-
 .topGameArea {
   display: flex;
   flex: 2 0 auto;
   width: 100%;
-  padding-top: 8px;
+  padding-top: 6px;
   justify-content: center;
 }
 .topGameArea > span {
@@ -137,7 +136,7 @@ body {
   flex: 2 0 auto;
   width: 100%;
   padding-top: 8px;
-  justify-content: space-evenly;
+  justify-content: center;
 }
 .playerMoves {
   display: flex;
@@ -148,6 +147,11 @@ body {
 .playerMoves > span {
   min-width: 30px;
   text-align: center;
+}
+.logoSmall {
+  width: 180px;
+  margin-top: -12px;
+  padding: 0 40px;
 }
 
 #gameArea {
@@ -197,8 +201,13 @@ body {
 .token {
   z-index: 1;
   position: absolute;
-  border-radius: 50%;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.2), 0 3px 6px rgba(0,0,0,0.2);
+  /* border-radius: 50%;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.2), 0 3px 6px rgba(0,0,0,0.2); */
+  background-size: 100%;
+  background-color: transparent;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url('assets/other/token.svg');
 }
 
 #grid .cell {
@@ -212,9 +221,9 @@ body {
   text-align: center;
   border: 2px solid rgb(255, 255, 255);
   border-radius: 50%;
-  background-size: 90%;
+  background-size: 100%;
   /* background-color: rgb(230, 230, 230); */
-  background-color: rgb(230, 230, 230);
+  background-color: rgb(255, 255, 255);
   background-position: center;
   background-repeat: no-repeat;
   user-select: none;
@@ -287,6 +296,7 @@ body {
   html,
   body {
     font-size: 1em;
+    background-image: url('assets/other/background_01.svg');
   }
 
   #instructions {
@@ -310,11 +320,17 @@ body {
   }
   .topGameArea > span {
     min-width: 40px;
-    margin-bottom: 0;
+    margin-top: auto;
   }
 
   .bottomGameArea {
     padding-top: 40px;
+  }
+
+  .logoSmall {
+    width: 300px;
+    margin-top: -24px;
+    padding: 0 60px;
   }
 
   #gameBoard {

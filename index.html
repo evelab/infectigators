@@ -5,10 +5,10 @@
     <title>Infectigators</title>
     <meta charset='utf-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel='preconnect' href='https://fonts.googleapis.com'>
+    <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin>
     <!-- <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next&family=Boogaloo&display=swap" rel="stylesheet"> -->
-    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@500;700&display=swap" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css2?family=Barlow:wght@500;700&display=swap' rel='stylesheet'>
     <link rel='stylesheet' href='styles.css' />
     <script defer type='text/javascript' src='app.js'></script>
   </head>
@@ -17,14 +17,15 @@
 
     <div id='rotatePrompt' class='bigDiv'>
       <div class='bigDivText'>
-        <p class='h1'>Infectigators</p>
+        <img src='assets/other/infectigators_logo.svg' alt='Infectigators'/>
+        <img src='assets/other/rotate_phone.svg' alt='Rotate phone'/>
         <p>Rotate your device to landscape to play!</p>
       </div>
     </div>
 
     <div id='startScreen' class='bigDiv'>
       <div class='bigDivText'>
-        <p class='h1'>Infectigators</p>
+        <img src='assets/other/infectigators_logo.svg' alt='Infectigators'/>
         <p>Race against your opponent to identify illnesses, and learn about their causes, symptoms and treatments</p>
         <button id='playButton' class='button2' onclick='playGame()'>Let's play!</button>
       </div>
@@ -46,6 +47,9 @@
           <span>Moves:</span>
           <span id='p1Moves'>3</span>
         </div>
+        <div class='logoSmall'>
+          <img src='assets/other/infectigators_logo.svg' alt='Infectigators'/>
+        </div>
         <div id='playerTwo' class='playerMoves'>
           <span>Moves:</span>
           <span id='p2Moves'>3</span>
@@ -58,13 +62,15 @@
         <!-- <div id='instructionsTop'> -->
         <button id='closeButton' class='button' onclick='instructionsDisplay()'></button>
         <!-- </div> -->
-        <p class='h1'>How to play</p>
-        <p>First player to get three pieces to the opposite 'Home' side wins!</p>
-        <p>In each turn, players can move their pieces 3 times. Moves can be split amongst any of their pieces in play in whichever way they like: one piece 3 times, or 3 different pieces each once.</p>
-        <p>Pieces can move forward, or sideways if an adjacent square has a symbol that matches their current square. Pieces cannot move backwards.</p>
-        <p>If a player encounters a piece of the other player, neither piece can move forward and may be blocked if they can't move sideways either.</p>
-        <p>Within the 'Free' lane, a player can move their piece to any unoccupied square.</p>
-        <p>Players can only land on the 'Home' square if it is unoccupied by the other player.</p>
+        <div class='folderText'>
+          <p class='h1'>How to play</p>
+          <p>First player to get three pieces to the opposite 'Home' side wins!</p>
+          <p>In each turn, players can move their pieces 3 times. Moves can be split amongst any of their pieces in play in whichever way they like: one piece 3 times, or 3 different pieces each once.</p>
+          <!-- <p>Pieces can move forward, or sideways if an adjacent square has a symbol that matches their current square. Pieces cannot move backwards.</p>
+          <p>If a player encounters a piece of the other player, neither piece can move forward and may be blocked if they can't move sideways either.</p>
+          <p>Within the 'Free' lane, a player can move their piece to any unoccupied square.</p>
+          <p>Players can only land on the 'Home' square if it is unoccupied by the other player.</p> -->
+        </div>
       </div>
     </div>
 
