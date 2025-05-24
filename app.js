@@ -12,11 +12,11 @@ function instructionsDisplay() {
 }
 
 const cellTypes = {
-  'Coronavirus': ['home', 'humans', 'droplets', 'mask', 'wash hands', 'free', 'fatigue', 'fever', 'rest', 'virus', 'home'],
-  'Rabies': ['home', 'animals', 'bite', 'education', 'avoid animals', 'free', 'fever', 'pain', 'wound cleaning', 'virus', 'home'],
-  'Borreliosis': ['home', 'arthropod', 'bite', 'clothing', 'repellent', 'free', 'rash', 'fever', 'medication', 'microorganism', 'home'],
-  'Malaria': ['home', 'arthropod', 'bite', 'net', 'repellent', 'free', 'vomitting', 'fever', 'medication', 'microorganism', 'home'],
-  'Influenza': ['home', 'humans', 'droplets', 'mask', 'wash hands', 'free', 'fever', 'cough', 'rest', 'virus', 'home']
+  'coronavirus': ['home', 'humans', 'droplets', 'mask', 'wash hands', 'free', 'fatigue', 'fever', 'rest', 'virus', 'home'],
+  'rabies': ['home', 'animals', 'bite', 'education', 'avoid animals', 'free', 'fever', 'pain', 'wound cleaning', 'virus', 'home'],
+  'borreliosis': ['home', 'arthropod', 'bite', 'clothing', 'repellent', 'free', 'rash', 'fever', 'medication', 'microorganism', 'home'],
+  'malaria': ['home', 'arthropod', 'bite', 'net', 'repellent', 'free', 'vomitting', 'fever', 'medication', 'microorganism', 'home'],
+  'influenza': ['home', 'humans', 'droplets', 'mask', 'wash hands', 'free', 'fever', 'cough', 'rest', 'virus', 'home']
   // 'Yellow Fever': ['home', 'arthropod', 'bite', 'net', 'repellent', 'free', 'vomitting', 'fever', 'rehydration', 'virus', 'home'],
   // 'American Tryps': ['home', 'arthropod', 'bite', 'tidy house', 'repellent', 'free', 'vomitting', 'fever', 'drugs', 'microorganism', 'home'],
   // 'Ebola': ['home', 'humans', 'fluids', 'cook food', 'wash hands', 'free', 'vomitting', 'fever', 'rehydration', 'virus', 'home'],
@@ -106,13 +106,15 @@ if (screenOrientation === 'landscape') {
 
 const screenWidth = window.screen.width;
 //for start position of tokens
-let tokenOffset = 4;
+// let tokenOffset = 4;
+let tokenOffset = 42;
 //for "let's play" button
 function playGame() {
   if (screenWidth < 941) {
     //use fullscreen for smallest devices (i.e. mobile phones)
     document.body.requestFullscreen();
-    tokenOffset = 1.6;
+    // tokenOffset = 1.6;
+    tokenOffset = 2.5;
   }
   startScreen.style.display = 'none';
   gameArea.style.display = 'flex';
@@ -123,6 +125,7 @@ screen.orientation.addEventListener('change', function() {
   screenOrientation = screen.orientation.type.substring(0,9);
   if (screenOrientation !== 'landscape') {
     startScreen.style.display = 'none';
+    lockScreen.style.display = 'none';
     gameArea.style.display = 'none';
     rotatePrompt.style.display = 'flex';
   } else {
@@ -167,7 +170,7 @@ function buildGame() {
     }
     else {
       cell.className += ' cellOther';
-      cell.style.backgroundImage = 'url("assets/icons/' + cellTypes[bugs[j]][k] + '.svg")';
+      cell.style.backgroundImage = 'url("assets/icons/' + bugs[j] + '/' + cellTypes[bugs[j]][k] + '.svg")';
       cellText.textContent = cellTypes[bugs[j]][k];
       cell.addEventListener('touchstart', showCellText);
     }
@@ -211,12 +214,14 @@ function buildGame() {
     let end = i < halfOfMarkers ? homeCells.slice(rows, rows*2) : homeCells.slice(0, rows);
     // token.style.backgroundColor = colour;
     // token.style.border = border;
+    let useToken = i < halfOfMarkers ? 'token_01' : 'token_02';
+    token.style.backgroundImage = 'url("assets/other/' + useToken + '.svg")';
     //initial (home) position of each marker
     let homeCell = homeCells[i];
     let cell = document.getElementById(homeCell);
-    // let x = cell.offsetLeft + Math.round(cell.offsetWidth / tokenOffset);
+    let x = cell.offsetLeft + Math.round(cell.offsetWidth / tokenOffset);
     // let y = cell.offsetTop + Math.round(cell.offsetHeight / 4);
-    let x = cell.offsetLeft + Math.round(cell.offsetWidth / 2.5);
+    // let x = cell.offsetLeft + Math.round(cell.offsetWidth / 2.5);
     let y = cell.offsetTop + Math.round(cell.offsetHeight / 60);
     token.style.left = x + 'px';
     token.style.top = y + 'px';
