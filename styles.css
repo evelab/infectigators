@@ -7,12 +7,60 @@ body {
   font-family: 'Barlow', sans-serif;
   font-weight: 500;
   font-size: 0.86em;
-  background-color: rgb(178, 213, 232);
+  background-color: rgb(215, 238, 244);
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  background-image: url('assets/other/background_02.svg');
+  background-image: url('assets/other/background_04.svg');
   /* overflow: auto; */
+}
+
+#rotatePrompt {
+  display: flex;
+}
+
+#startScreen {
+  display: none;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-image: url('assets/other/background_04.svg');
+}
+
+.bigDiv {
+  z-index: 1;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  font-size: 150%;
+  color: rgb(0, 0, 0);
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(215, 238, 244);
+}
+.bigDivText {
+  padding: 20%;
+}
+.startScreenText {
+  margin-top: 0;
+  margin-bottom: 40px;
+}
+
+.playButton {
+  width: 160px;
+  height: 40px;
+  background-color: rgb(255, 255, 255);
+  border: none;
+  border-radius: 30px;
+  /* font-family: 'Boogaloo', sans-serif; */
+  font-size: 120%;
+  font-weight: 700;
+}
+.playButton:hover {
+  cursor: pointer;
 }
 
 #lockScreen {
@@ -28,10 +76,10 @@ body {
   background-color: rgba(0, 0, 0, 0.6);
 }
 
-#instructions {
+#folder {
   position: relative;
   width: 560px;
-  aspect-ratio: 16/9.5;
+  aspect-ratio: 5/3;
   font-size: 110%;
   color: rgb(0, 0, 0);
   background-size: auto 100%;
@@ -41,17 +89,25 @@ body {
   overflow: hidden;
   scrollbar-color: rgb(60, 60, 60) transparent;
 }
+#folderImage {
+  position: absolute;
+  top: 66px;
+  right: 72px;
+  width: 164px;
+  height: 164px;
+}
 .h1 {
-  font-size: 300%;
+  font-size: 280%;
   font-weight: 700;
+  text-transform: capitalize;
 }
 .folderText {
-  padding: 20px 45% 0 50px;
+  padding: 20px 45% 0 44px;
 }
 .button {
   position: absolute;
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   /* background-color: rgba(0, 0, 0, 0.4); */
   background-color: transparent;
   background-position: center;
@@ -64,52 +120,22 @@ body {
   cursor: pointer;
 }
 #closeButton {
-  top: 7px;
-  right: 9px;
+  top: 6px;
+  right: 5px;
 }
 
-#rotatePrompt {
-  display: flex;
-}
-
-#startScreen {
+#bugInfoBoard {
   display: none;
+  position: relative;
+  height: 88%;
+  aspect-ratio: 3/2;
+  background-size: auto 100%;
   background-position: center;
   background-repeat: no-repeat;
-  background-size: cover;
-  background-image: url('assets/other/background_02.svg');
 }
-
-.bigDiv {
-  z-index: 1;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  font-size: 150%;
-  color: rgb(0, 0, 0);
-  text-align: center;
-  justify-content: center;
-  align-items: center;
-  background-color: rgb(178, 213, 232);
-}
-.bigDivText {
-  padding: 20%;
-}
-
-.button2 {
-  width: 160px;
-  height: 40px;
-  background-color: rgb(255, 255, 255);
-  border: none;
-  border-radius: 30px;
-  /* font-family: 'Boogaloo', sans-serif; */
-  font-size: 120%;
-  font-weight: 700;
-}
-.button2:hover {
-  cursor: pointer;
+#closeButton2 {
+  top: 4%;
+  right: 3%;
 }
 
 .topGameArea {
@@ -131,6 +157,12 @@ body {
   /* top: 10px; */
   right: 30px;
   background-image: url('assets/icons/info.svg');
+}
+#p1Points {
+  color: rgb(213, 94, 0);
+}
+#p2Points {
+  color: rgb(0, 114, 178);
 }
 
 .bottomGameArea {
@@ -203,8 +235,9 @@ body {
 .token {
   z-index: 1;
   position: absolute;
-  /* border-radius: 50%;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.2), 0 3px 6px rgba(0,0,0,0.2); */
+  border-radius: 50%;
+  border: 4px solid transparent;
+  /* box-shadow: 0 3px 6px rgba(0,0,0,0.2), 0 3px 6px rgba(0,0,0,0.2); */
   background-size: 100%;
   background-color: transparent;
   background-position: center;
@@ -221,51 +254,53 @@ body {
   justify-content: center;
   align-items: center;
   text-align: center;
-  border: 2px solid rgb(255, 255, 255);
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2), 0 2px 4px rgba(0,0,0,0.2);
+  /* border: 2px solid rgb(200, 200, 200); */
   border-radius: 50%;
   background-size: 100%;
-  /* background-color: rgb(230, 230, 230); */
-  background-color: rgb(255, 255, 255);
+  background-color: transparent;
+  /* background-color: rgb(255, 255, 255); */
   background-position: center;
   background-repeat: no-repeat;
   user-select: none;
   /* -webkit-user-select: none; */
 }
-#grid .cellText {
+#grid .cellMask {
   display: none;
-  flex-direction: column;
+  /* flex-direction: column; */
   width: 100%;
   height: 100%;
-  padding: 2px;
-  justify-content: center;
-  align-content: center;
-  color:rgb(0, 0, 0);
-  background-color: rgba(255, 255, 255, 0.8);
-  pointer-events: none;
+  /* padding: 2px; */
+  /* justify-content: center;
+  align-content: center; */
+  /* color:rgba(0, 0, 0, 0); */
+  background-color: rgba(255, 255, 255, 0.84);
+  /* pointer-events: none; */
 }
-#grid .cellHome {
+/* #grid .cellHome {
+  color:rgba(0, 0, 0, 0);
   font-size: 200%;
   font-weight: 700;
-}
+} */
 /* add hover effect to button on hover enabled devices only */
-@media (hover: hover) {
+/* @media (hover: hover) {
   #grid .cellOther:hover .cellText {
     display: flex;
   }
-}
-#grid .cellFlash {
-  /* background-color: rgb(220, 243, 239); */
+} */
+/* #grid .cellFlash {
   transition: background-color 0.4s linear;
   animation: flash 0.8s 0.4s 1;
-}
-@keyframes flash {
+} */
+/* @keyframes flash {
   50% {
     background-color:rgb(230, 230, 230);
   }
-}
+} */
 
 /* modifiers for larger screens (e.g. tablet) in landscape mode */
-@media only screen and (min-width: 941px) and (max-width: 1279px) {
+/* @media only screen and (min-width: 941px) and (max-width: 1279px) {
   html,
   body {
     font-size: 0.97em;
@@ -273,23 +308,17 @@ body {
 
   #instructions {
     width: 80%;
-    /* font-size: 110%; */
   }
-
-  /* #gameBoard {
-    width: 90%;
-    flex: 0 0 60%;
-  } */
 
   #columnHeaders .headerText {
     font-size: 100%;
   }
 
-  .button2 {
+  .playButton {
     width: 160px;
     height: 60px;
   }
-}
+} */
 
 /* modifiers for biggest screens (e.g. laptops) */
 @media only screen and (min-width: 1280px) {
@@ -298,27 +327,44 @@ body {
     font-size: 1em;
   }
 
-  #instructions {
-    width: 900px;
-    /* font-size: 110%; */
-  }
-  .folderText {
-    padding: 40px 45% 0 60px;
+  .startScreenText {
+    padding-left: 20%;
+    padding-right: 20%;
   }
 
-  .button {
-    width: 40px;
-    height: 40px;
-  }
-
-  .button2 {
+  .playButton {
     width: 220px;
     height: 60px;
   }
 
+  .button {
+    width: 44px;
+    height: 44px;
+  }
+
+  #folder {
+    width: 900px;
+  }
+  #folderImage {
+    top: 106px;
+    right: 116px;
+    width: 264px;
+    height: 264px;
+  }
+  .folderText {
+    padding: 40px 45% 0 70px;
+  }
   #closeButton {
-    top: 15px;
-    right: 17px;
+    top: 13px;
+    right: 12px;
+  }
+
+  #bugInfoBoard {
+    height: 700px;
+  }
+  #closeButton2 {
+    top: 38px;
+    right: 38px;
   }
 
   .topGameArea {
@@ -327,6 +373,7 @@ body {
   .topGameArea > span {
     min-width: 40px;
     margin-top: auto;
+    font-size: 220%;
   }
 
   .bottomGameArea {
@@ -346,6 +393,6 @@ body {
 
   #columnHeaders .headerText {
     padding: 0 4px 22px;
-    font-size: 110%;
+    font-size: 120%;
   }
 }

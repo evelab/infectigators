@@ -27,8 +27,8 @@
     <div id='startScreen' class='bigDiv'>
       <div class='bigDivText'>
         <img src='assets/other/infectigators.svg' alt='Infectigators'/>
-        <p>Race against your opponent to identify illnesses, and learn about their causes, symptoms and treatments</p>
-        <button id='playButton' class='button2' onclick='playGame()'>Let's play!</button>
+        <p class='startScreenText'>Race against your opponent to identify illnesses, and learn about their causes, symptoms and treatments</p>
+        <button class='playButton' onclick='playGame()'>Let's play!</button>
       </div>
     </div>
 
@@ -59,10 +59,11 @@
     </div>
 
     <div id='lockScreen'>
-      <div id='instructions'>
-        <button id='closeButton' class='button' onclick='instructionsDisplay()'></button>
+      <div id='folder'>
+        <button id='closeButton' class='button' onclick='closeFolder()'></button>
+        <img id='folderImage' src='assets/icons/influenza/virus.svg' alt='Infectigators'/>
         <div class='folderText'>
-          <p class='h1'>How to play</p>
+          <p id='folderTitle' class='h1'>How to play</p>
           <p>First player to get three pieces to the opposite 'Home' side wins!</p>
           <p>In each turn, players can move their pieces 3 times. Moves can be split amongst any of their pieces in play in whichever way they like: one piece 3 times, or 3 different pieces each once.</p>
           <!-- <p>Pieces can move forward, or sideways if an adjacent square has a symbol that matches their current square. Pieces cannot move backwards.</p>
@@ -70,6 +71,9 @@
           <p>Within the 'Free' lane, a player can move their piece to any unoccupied square.</p>
           <p>Players can only land on the 'Home' square if it is unoccupied by the other player.</p> -->
         </div>
+      </div>
+      <div id='bugInfoBoard'>
+        <button id='closeButton2' class='button' onclick='closeBugInfo()'></button>
       </div>
     </div>
 

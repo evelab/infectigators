@@ -2,26 +2,40 @@ const rotatePrompt = document.getElementById('rotatePrompt');
 const startScreen = document.getElementById('startScreen');
 const gameArea = document.getElementById('gameArea');
 const lockScreen = document.getElementById('lockScreen');
+const folder = document.getElementById('folder');
+const folderTitle = document.getElementById('folderTitle');
+const folderImage = document.getElementById('folderImage');
+let blockCellInfo = false;
+const bugInfoBoard = document.getElementById('bugInfoBoard');
 
 function instructionsDisplay() {
-  if(lockScreen.style.display == 'flex') {;
-    lockScreen.style.display = 'none';
-  } else {
-    lockScreen.style.display = 'flex';
-  }
+  lockScreen.style.display = 'flex';
+  folderTitle.textContent = 'How to play';
+}
+
+function closeFolder() {
+  lockScreen.style.display = 'none';
+  folderTitle.textContent = '';
+  folderImage.src = '';
+}
+
+function closeBugInfo() {
+  lockScreen.style.display = 'none';
+  bugInfoBoard.style.display = 'none';
+  folder.style.display = 'block';
 }
 
 const cellTypes = {
   'coronavirus': ['home', 'humans', 'droplets', 'mask', 'wash hands', 'free', 'fatigue', 'fever', 'rest', 'virus', 'home'],
   'rabies': ['home', 'animals', 'bite', 'education', 'avoid animals', 'free', 'fever', 'pain', 'wound cleaning', 'virus', 'home'],
   'borreliosis': ['home', 'arthropod', 'bite', 'clothing', 'repellent', 'free', 'rash', 'fever', 'medication', 'microorganism', 'home'],
-  'malaria': ['home', 'arthropod', 'bite', 'net', 'repellent', 'free', 'vomitting', 'fever', 'medication', 'microorganism', 'home'],
+  'malaria': ['home', 'arthropod', 'bite', 'net', 'repellent', 'free', 'vomiting', 'fever', 'medication', 'microorganism', 'home'],
   'influenza': ['home', 'humans', 'droplets', 'mask', 'wash hands', 'free', 'fever', 'cough', 'rest', 'virus', 'home']
-  // 'Yellow Fever': ['home', 'arthropod', 'bite', 'net', 'repellent', 'free', 'vomitting', 'fever', 'rehydration', 'virus', 'home'],
-  // 'American Tryps': ['home', 'arthropod', 'bite', 'tidy house', 'repellent', 'free', 'vomitting', 'fever', 'drugs', 'microorganism', 'home'],
-  // 'Ebola': ['home', 'humans', 'fluids', 'cook food', 'wash hands', 'free', 'vomitting', 'fever', 'rehydration', 'virus', 'home'],
-  // 'Cholera': ['home', 'humans', 'water', 'cook food', 'wash hands', 'free', 'diarrhoea', 'vomitting', 'rehydration', 'microorganism', 'home'],
-  // 'Dengue Fever': ['home', 'arthropod', 'bite', 'net', 'repellent', 'free', 'pain', 'vomitting', 'rest', 'virus', 'home'],
+  // 'Yellow Fever': ['home', 'arthropod', 'bite', 'net', 'repellent', 'free', 'vomiting', 'fever', 'rehydration', 'virus', 'home'],
+  // 'American Tryps': ['home', 'arthropod', 'bite', 'tidy house', 'repellent', 'free', 'vomiting', 'fever', 'drugs', 'microorganism', 'home'],
+  // 'Ebola': ['home', 'humans', 'fluids', 'cook food', 'wash hands', 'free', 'vomiting', 'fever', 'rehydration', 'virus', 'home'],
+  // 'Cholera': ['home', 'humans', 'water', 'cook food', 'wash hands', 'free', 'diarrhoea', 'vomiting', 'rehydration', 'microorganism', 'home'],
+  // 'Dengue Fever': ['home', 'arthropod', 'bite', 'net', 'repellent', 'free', 'pain', 'vomiting', 'rest', 'virus', 'home'],
   // 'African Tryps': ['home', 'arthropod', 'bite', 'net', 'repellent', 'free', 'fatigue', 'fever', 'drugs', 'microorganism', 'home']
 };
 
@@ -31,7 +45,8 @@ const grid = document.getElementById('grid');
 const rows = 5;
 const cols = 11;
 const cells = rows * cols;
-const headers = ['', 'Vector', 'Transmission', 'Prevention', '', 'Symptoms', 'Treatment', 'Agent', ''];
+// const headers = ['', 'Vector', 'Transmission', 'Prevention', '', 'Symptoms', 'Treatment', 'Agent', ''];
+const headers = ['', 'Source', 'Spread', 'Prevent', '', 'Signs', 'Treat', 'Germ', ''];
 const homeCells = []; //index of 'home' cells (i.e. start and end cells)
 for (i = 0; i < rows; i++) {
   homeCells.splice(i, 0, cols * i); //player 1 home cells
@@ -54,11 +69,11 @@ function shuffle(array) {
   return array;
 }
 //get a single array with unique cell types
-const allCellTypes = [];
-for (i = 0; i < rows; i++) {
-  cellTypes[bugs[i]].map(e => allCellTypes.push(e));
-}
-const uniqueCellTypes = [...new Set(allCellTypes)];
+// const allCellTypes = [];
+// for (i = 0; i < rows; i++) {
+//   cellTypes[bugs[i]].map(e => allCellTypes.push(e));
+// }
+// const uniqueCellTypes = [...new Set(allCellTypes)];
 let occupiedCells = [...homeCells];
 let activeCells = [];
 const markers = [];
@@ -105,20 +120,21 @@ if (screenOrientation === 'landscape') {
 }
 
 const screenWidth = window.screen.width;
-//for start position of tokens
-// let tokenOffset = 4;
-let tokenOffset = 42;
+//for adjusting start position of tokens
+let tokenOffset = 0;
 //for "let's play" button
 function playGame() {
   if (screenWidth < 941) {
     //use fullscreen for smallest devices (i.e. mobile phones)
     document.body.requestFullscreen();
-    // tokenOffset = 1.6;
-    tokenOffset = 2.5;
+    tokenOffset = (a) => {
+      return Math.round(a / 2.5);
+    }
   }
   startScreen.style.display = 'none';
   gameArea.style.display = 'flex';
   buildGame();
+  lockScreen.style.display = 'flex';
 }
 
 screen.orientation.addEventListener('change', function() {
@@ -133,7 +149,6 @@ screen.orientation.addEventListener('change', function() {
     if (currentClientWidth === undefined) {
       //create game board and markers only if device is in landscape mode
       // location.reload(); //reload page to get correct grid size
-      // buildGame();
       startScreen.style.display = 'flex';
     } else {
       gameArea.style.display = 'flex';
@@ -156,26 +171,30 @@ function buildGame() {
     cell.className = 'cell';
     cell.style.width = cellWidthPx;
     cell.style.height = cellWidthPx;
-    let cellText = document.createElement('div');
-    cellText.className = 'cellText';
+    let cellMask = document.createElement('div');
+    cellMask.className = 'cellMask';
     if (firstCol.indexOf(i) > 0) {
       j++;
       k = 0;
     }
     cell.setAttribute('data-rownumber', j);
-    cell.setAttribute('data-celltype', uniqueCellTypes.indexOf(cellTypes[bugs[j]][k]));
+    let cellType = cellTypes[bugs[j]][k];
+    cell.setAttribute('data-celltype', cellType);
     if (homeCells.indexOf(i) > -1) {
-      cell.textContent = '?';
-      cell.className += ' cellHome';
+      // cell.textContent = '?';
+      // cell.className += ' cellHome';
+      cell.style.backgroundColor = k === 0 ? 'rgb(243, 226, 214)' : 'rgb(204, 219, 228)';
     }
     else {
-      cell.className += ' cellOther';
-      cell.style.backgroundImage = 'url("assets/icons/' + bugs[j] + '/' + cellTypes[bugs[j]][k] + '.svg")';
-      cellText.textContent = cellTypes[bugs[j]][k];
-      cell.addEventListener('touchstart', showCellText);
+      // cell.className += ' cellOther';
+      let iconURL = 'assets/icons/' + bugs[j] + '/' + cellType + '.svg';
+      cell.setAttribute('data-icon', iconURL);
+      cell.style.backgroundImage = 'url("' + iconURL + '")';
+      // cellText.textContent = cellTypes[bugs[j]][k];
+      cell.addEventListener('click', showCellInfo);
     }
     grid.appendChild(cell);
-    cell.appendChild(cellText);
+    cell.appendChild(cellMask);
     k++;
   }
 
@@ -188,7 +207,7 @@ function buildGame() {
     header.id = 'h' + i;
     header.className = 'headerText';
     let ht = headers[i];
-    if (ht === 'Prevention' || ht === 'Symptoms') {
+    if (ht === 'Prevent' || ht === 'Signs') {
       // header.style.width = cellWidth * 2 + 10 + 'px';
       header.style.width = cellWidth * 2 + 17 + 'px';
     } else {
@@ -208,41 +227,44 @@ function buildGame() {
     token.className = 'token';
     token.style.width = markerWidth;
     token.style.height = markerWidth;
-    // let colour = i < halfOfMarkers ? 'rgba(255, 118, 0, 0.8)' : 'rgba(0, 108, 255, 0.8)';
-    // let border = i < halfOfMarkers ? '2px solid rgba(255, 118, 0, 1)' : '2px solid rgba(0, 108, 255, 1)';
+    let border = i < halfOfMarkers ? 'rgb(213, 94, 0)' : 'rgb(0, 114, 178)';
     let start = i < halfOfMarkers ? homeCells.slice(0, rows) : homeCells.slice(rows, rows*2);
     let end = i < halfOfMarkers ? homeCells.slice(rows, rows*2) : homeCells.slice(0, rows);
-    // token.style.backgroundColor = colour;
-    // token.style.border = border;
     let useToken = i < halfOfMarkers ? 'token_01' : 'token_02';
     token.style.backgroundImage = 'url("assets/other/' + useToken + '.svg")';
     //initial (home) position of each marker
     let homeCell = homeCells[i];
     let cell = document.getElementById(homeCell);
-    let x = cell.offsetLeft + Math.round(cell.offsetWidth / tokenOffset);
-    // let y = cell.offsetTop + Math.round(cell.offsetHeight / 4);
-    // let x = cell.offsetLeft + Math.round(cell.offsetWidth / 2.5);
-    let y = cell.offsetTop + Math.round(cell.offsetHeight / 60);
+    let x = cell.offsetLeft;
+    if (tokenOffset !== 0) {
+      x += tokenOffset(cell.offsetWidth);
+    }
+    let y = cell.offsetTop
     token.style.left = x + 'px';
     token.style.top = y + 'px';
     //make marker clickable and add to grid
     token.style.cursor = 'pointer';
     token.addEventListener('click', clickMarker);
     grid.appendChild(token);
-    // let markerObject = {marker:token, currentCell:homeCell, prevCell:homeCell, tokenColour:colour, startCells:start, endCells:end};
-    // markers.push(markerObject);
-    let markerObject = {marker:token, currentCell:homeCell, prevCell:homeCell, startCells:start, endCells:end};
+    let markerObject = {marker:token, tokenBorder:border, currentCell:homeCell, prevCell:homeCell, startCells:start, endCells:end};
     markers.push(markerObject);
   }
 }
 
-//touch screens only: show cell text when touching cell
-function showCellText(e) {
-  let cellText = e.target.children[0];
-  cellText.style.display = 'flex';
-  setTimeout(function() {
-    cellText.style.display = 'none';
-  }, 1000)
+//show cell information when clicking cell
+//only if no active marker!
+function showCellInfo(e) {
+  if (blockCellInfo === false) {
+    let clickedIcon = e.target;
+    folderTitle.textContent = clickedIcon.getAttribute('data-celltype');
+    folderImage.src = clickedIcon.getAttribute('data-icon');
+    lockScreen.style.display = 'flex';
+  }
+  // let cellText = e.target.children[0];
+  // cellText.style.display = 'flex';
+  // setTimeout(function() {
+  //   cellText.style.display = 'none';
+  // }, 1000)
 }
 
 //remove click events from all cells (when clicking on marker and after moving marker)
@@ -280,13 +302,14 @@ function removeMarkerClickEvent(firstMarker, lastMarker) {
 
 //add click event to required cells when clicking on marker
 function clickMarker(e) {
+  blockCellInfo = true; //blocks cell info popup from appearing when clicking cell to move token
   activeMarker = e.target;
   //determine which marker and which player was clicked
   if (activePlayer != undefined) {
     let prevActiveMarker = markers[z].marker;
     if (prevActiveMarker.id != activeMarker.id) {
       removeCellClickEvent();
-      prevActiveMarker.style.backgroundColor = markers[z].tokenColour;
+      prevActiveMarker.style.borderColor = 'transparent';
     }
     z = Number(activeMarker.id.charAt(1));
   } else {
@@ -302,13 +325,13 @@ function clickMarker(e) {
     }
   }
   //determine which moves are possible for the given player and marker
-  // activeMarker.style.backgroundColor = z < halfOfMarkers ? 'rgba(255, 118, 0, 1)' : 'rgba(0, 108, 255, 1)';
   let m = (maxMoves - moveCount);
   let moves = allowedMoves['p' + activePlayer];
   let currentCellType = document.getElementById(markers[z].currentCell).getAttribute('data-celltype');
+  activeMarker.style.borderColor = markers[z].tokenBorder;
   for (i = 0; i < 3; i++) {
     //if on 'free' or 'start (i.e. home)'cell can move to any other unoccupied cell in same column
-    if (currentCellType === '5' && i != 0) { //type '5' is a 'free' (i.e. switch) cell (depends on number of columns!)
+    if (currentCellType === 'free' && i != 0) {
       for (k = 0; k < rows; k++) {
         let cellID = (k * 11) + 5;
         if (occupiedCells.indexOf(cellID) >= 0) {
@@ -339,7 +362,7 @@ function clickMarker(e) {
           cell.style.cursor = 'pointer';
           cell.addEventListener('click', clickCell);
           activeCells.push(cellID);
-          if (cellType === '0') { //break "nextCell" loop if cellType is a 'home' cell (type '0')
+          if (cellType === 'home') { //break "nextCell" loop if cellType is a 'home' cell
             break nextCell;
           }
         } else if (currentCellType != cellType) {
@@ -362,15 +385,18 @@ function clickCell(e) {
   } else {
     removeMarkerClickEvent(halfOfMarkers, totalMarkers);
   }
-  let clickedCell = e.target;
+  activeMarker.style.borderColor = 'transparent'; //clear active marker border
   let cellA = markers[z].currentCell;
+  document.getElementById(cellA).children[0].style.display = 'none'; //remove fade from current cell
   markers[z].prevCell = cellA;
+  let clickedCell = e.target;
   let cellB = Number(clickedCell.id);
   markers[z].currentCell = cellB;
-  // let targetX = clickedCell.offsetLeft + Math.round(clickedCell.offsetWidth / 4);
-  // let targetY = clickedCell.offsetTop + Math.round(clickedCell.offsetHeight / 4);
-  let targetX = clickedCell.offsetLeft + Math.round(clickedCell.offsetWidth / 20);
-  let targetY = clickedCell.offsetTop + Math.round(clickedCell.offsetHeight / 60);
+  if (markers[z].startCells.indexOf(cellB) === -1) {
+    clickedCell.children[0].style.display = 'flex'; //fade clicked cell if not moving within home cells
+  }
+  let targetX = clickedCell.offsetLeft;
+  let targetY = clickedCell.offsetTop;
   let mm = null;
   let x = activeMarker.offsetLeft;
   let y = activeMarker.offsetTop;
@@ -392,13 +418,12 @@ function clickCell(e) {
       activeMarker.style.top = y + 'px';
     } else {
       clearInterval(mm);
-      // activeMarker.style.backgroundColor = markers[z].tokenColour;
       occupiedCells.splice(occupiedCells.indexOf(cellA), 1, cellB);
       //calculate number of moves it takes to get to clicked cell
       let newMoves = null;
       let cellDiff = Math.abs(cellB - cellA);
       //if moving within 'free' column count as 1 move only
-      if (document.getElementById(cellA).getAttribute('data-celltype') === '5' && clickedCell.getAttribute('data-celltype') === '5') {
+      if (document.getElementById(cellA).getAttribute('data-celltype') === 'free' && clickedCell.getAttribute('data-celltype') === 'free') {
         newMoves = 1;
       }
       else if (cellDiff % cols === 0) {
@@ -415,19 +440,26 @@ function clickCell(e) {
       } else {
         p2Moves.textContent = movesLeft;
       }
+      //check if clicked cell is an end cell
+      if (markers[z].endCells.indexOf(cellB) >= 0) {
+        folder.style.display = 'none';
+        let activeRow = Number(clickedCell.getAttribute('data-rownumber'));
+        bugInfoBoard.style.backgroundImage = 'url("assets/other/' + bugs[activeRow] + '.svg")';
+        bugInfoBoard.style.display = 'block';
+        lockScreen.style.display = 'flex';
       //check if clicked cell is an end cell and marker is not moving within start cells and...
-      if (markers[z].endCells.indexOf(markers[z].currentCell) >= 0 && markers[z].endCells.indexOf(markers[z].prevCell) === -1) {
+      // if (markers[z].endCells.indexOf(markers[z].currentCell) >= 0 && markers[z].endCells.indexOf(markers[z].prevCell) === -1) {
         //reveal bug name
-        activeRow = Number(clickedCell.getAttribute('data-rownumber'));
-        for (i = 0; i < cols; i++) {
-          let cell = document.getElementById(i + (activeRow * cols));
-          cell.style.backgroundColor = 'rgb(220, 243, 239)';
-          cell.className += ' cellFlash';
-          if (i === 0 || i === cols - 1) {
-            cell.style.fontSize = '100%';
-            cell.textContent = bugs[activeRow];
-          }
-        }
+        // activeRow = Number(clickedCell.getAttribute('data-rownumber'));
+        // for (i = 0; i < cols; i++) {
+        //   let cell = document.getElementById(i + (activeRow * cols));
+        //   cell.style.backgroundColor = 'rgb(220, 243, 239)';
+        //   cell.className += ' cellFlash';
+        //   if (i === 0 || i === cols - 1) {
+        //     cell.style.fontSize = '100%';
+        //     cell.textContent = bugs[activeRow];
+        //   }
+        // }
         //add marker to list of unmoveable markers in subsequent turns
         markersAtEnd.push(z);
         //add points
@@ -450,6 +482,7 @@ function clickCell(e) {
       }
     }
   }
+  blockCellInfo = false;
 }
 
 function swapPlayers() {
