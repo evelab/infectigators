@@ -124,17 +124,28 @@ const screenWidth = window.screen.width;
 let tokenOffset = 0;
 //for "let's play" button
 function playGame() {
-  if (screenWidth < 941) {
-    //use fullscreen for smallest devices (i.e. mobile phones)
+  if (screenWidth < 1280) {
+    //use fullscreen for smaller devices (i.e. smartphones and tablets)
     document.body.requestFullscreen();
     tokenOffset = (a) => {
       return Math.round(a / 2.5);
     }
+    document.addEventListener('fullscreenchange', function() {
+      if (document.fullscreenElement) {
+        document.getElementById('fullscreenButton').style.display = 'none';
+      } else {
+        document.getElementById('fullscreenButton').style.display = 'block';
+      }
+    });
   }
   startScreen.style.display = 'none';
   gameArea.style.display = 'flex';
   buildGame();
   lockScreen.style.display = 'flex';
+}
+
+function fullscreen() {
+  document.body.requestFullscreen();
 }
 
 screen.orientation.addEventListener('change', function() {

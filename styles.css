@@ -152,17 +152,22 @@ body {
   font-weight: 700;
   text-align: center;
 }
-#infoButton {
-  /* position: absolute; */
-  /* top: 10px; */
-  right: 30px;
-  background-image: url('assets/icons/info.svg');
+#fullscreenButton {
+  display: none;
+  left: 30px;
+  background-image: url('assets/icons/fullscreen.svg');
 }
 #p1Points {
   color: rgb(213, 94, 0);
 }
 #p2Points {
   color: rgb(0, 114, 178);
+}
+#infoButton {
+  /* position: absolute; */
+  /* top: 10px; */
+  right: 30px;
+  background-image: url('assets/icons/info.svg');
 }
 
 .bottomGameArea {
