@@ -41,12 +41,18 @@ body {
   align-items: center;
   background-color: rgb(215, 238, 244);
 }
-.bigDivText {
-  padding: 20%;
+
+.rotateDiv {
+  padding: 0 20%;
+}
+
+.startScreenDiv {
+  padding: 0 12%;
 }
 .startScreenText {
-  margin-top: 0;
-  margin-bottom: 40px;
+  margin-top: -40px;
+  margin-bottom: 20px;
+  padding: 0 20%;
 }
 
 .playButton {
@@ -96,13 +102,19 @@ body {
   width: 164px;
   height: 164px;
 }
+.folderContent {
+  padding: 20px 45% 0 44px;
+  font-size: 110%;
+}
 .h1 {
-  font-size: 280%;
+  font-size: 260%;
   font-weight: 700;
   text-transform: capitalize;
+  margin-bottom: 14px;
 }
-.folderText {
-  padding: 20px 45% 0 44px;
+.folderContent > hr {
+  margin-bottom: 20px;
+  border-top: 2px solid;
 }
 .button {
   position: absolute;
@@ -223,8 +235,8 @@ body {
   padding: 0 4px 12px;
   margin: 0;
   text-align: center;
-  /* font-size: 110%; */
-  font-size: 90%;
+  font-size: 110%;
+  /* font-size: 90%; */
   font-weight: 700;
 }
 
@@ -333,8 +345,10 @@ body {
   }
 
   .startScreenText {
-    padding-left: 20%;
-    padding-right: 20%;
+    margin-top: -80px;
+    margin-bottom: 60px;
+    padding: 0 24%;
+    font-size: 120%;
   }
 
   .playButton {
@@ -356,8 +370,14 @@ body {
     width: 264px;
     height: 264px;
   }
-  .folderText {
-    padding: 40px 45% 0 70px;
+  .folderContent {
+    padding: 50px 46% 0 70px;
+  }
+  .h1 {
+    margin-bottom: 20px;
+  }
+  .folderContent > hr {
+    margin-bottom: 40px;
   }
   #closeButton {
     top: 13px;

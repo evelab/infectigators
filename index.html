@@ -17,7 +17,7 @@
   <body>
 
     <div id='rotatePrompt' class='bigDiv'>
-      <div class='bigDivText'>
+      <div class='rotateDiv'>
         <img src='assets/other/infectigators.svg' alt='Infectigators'/>
         <img src='assets/other/rotate_phone.svg' alt='Rotate phone'/>
         <p>Rotate your device to landscape to play!</p>
@@ -25,7 +25,7 @@
     </div>
 
     <div id='startScreen' class='bigDiv'>
-      <div class='bigDivText'>
+      <div class='startScreenDiv'>
         <img src='assets/other/infectigators.svg' alt='Infectigators'/>
         <p class='startScreenText'>Race against your opponent to identify illnesses, and learn about their causes, symptoms and treatments</p>
         <button class='playButton' onclick='playGame()'>Let's play!</button>
@@ -63,10 +63,12 @@
       <div id='folder'>
         <button id='closeButton' class='button' onclick='closeFolder()'></button>
         <img id='folderImage' src='assets/icons/influenza/virus.svg' alt='Infectigators'/>
-        <div class='folderText'>
+        <div class='folderContent'>
           <p id='folderTitle' class='h1'>How to play</p>
-          <p>First player to get three pieces to the opposite 'Home' side wins!</p>
-          <p>In each turn, players can move their pieces 3 times. Moves can be split amongst any of their pieces in play in whichever way they like: one piece 3 times, or 3 different pieces each once.</p>
+          <hr>
+          <p id='folderText'></p>
+          <!-- <p id='folderText'>First player to get three pieces to the opposite 'Home' side wins!</p>
+          <p>In each turn, players can move their pieces 3 times. Moves can be split amongst any of their pieces in play in whichever way they like: one piece 3 times, or 3 different pieces each once.</p> -->
           <!-- <p>Pieces can move forward, or sideways if an adjacent square has a symbol that matches their current square. Pieces cannot move backwards.</p>
           <p>If a player encounters a piece of the other player, neither piece can move forward and may be blocked if they can't move sideways either.</p>
           <p>Within the 'Free' lane, a player can move their piece to any unoccupied square.</p>

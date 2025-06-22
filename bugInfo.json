@@ -1,0 +1,138 @@
+{
+    "test": [
+
+    ],
+    "folderText": [
+        {
+            "howto": [
+                {
+                    "title": "how to play",
+                    "text": "First player to get three pieces to the opposite side wins!<br><br>In each turn, players can move their pieces 3 times. Moves can be split amongst any of their pieces in play in whichever way they like: one piece 3 times, or 3 different pieces each once."
+                },
+                {
+                    "text": "Pieces can move forward, or sideways if an adjacent square has a symbol that matches their current square. Pieces cannot move backwards."
+                }
+            ],
+            "free": [
+                {
+                    "text": "Descriptive text..."
+                }
+            ],
+            "humans": [
+                {
+                    "text": "Descriptive text..."
+                }
+            ],
+            "droplets": [
+                {
+                    "text": "Descriptive text..."
+                }
+            ],
+            "mask": [
+                {
+                    "text": "Descriptive text..."
+                }
+            ],
+            "wash hands": [
+                {
+                    "text": "Descriptive text..."
+                }
+            ],
+            "fatigue": [
+                {
+                    "text": "Descriptive text..."
+                }
+            ],
+            "fever": [
+                {
+                    "text": "Descriptive text..."
+                }
+            ],
+            "rest": [
+                {
+                    "text": "Descriptive text..."
+                }
+            ],
+            "virus": [
+                {
+                    "text": "Descriptive text..."
+                }
+            ],
+            "animals": [
+                {
+                    "text": "Descriptive text..."
+                }
+            ],
+            "bite": [
+                {
+                    "text": "Descriptive text..."
+                }
+            ],
+            "education": [
+                {
+                    "text": "Descriptive text..."
+                }
+            ],
+            "avoid animals": [
+                {
+                    "text": "Descriptive text..."
+                }
+            ],
+            "pain": [
+                {
+                    "text": "Descriptive text..."
+                }
+            ],
+            "wound cleaning": [
+                {
+                    "text": "Descriptive text..."
+                }
+            ],
+            "arthropod": [
+                {
+                    "text": "Descriptive text..."
+                }
+            ],
+            "clothing": [
+                {
+                    "text": "Descriptive text..."
+                }
+            ],
+            "repellent": [
+                {
+                    "text": "Descriptive text..."
+                }
+            ],
+            "rash": [
+                {
+                    "text": "Descriptive text..."
+                }
+            ],
+            "medication": [
+                {
+                    "text": "Descriptive text..."
+                }
+            ],
+            "microorganism": [
+                {
+                    "text": "Descriptive text..."
+                }
+            ],
+            "net": [
+                {
+                    "text": "Descriptive text..."
+                }
+            ],
+            "vomiting": [
+                {
+                    "text": "Descriptive text..."
+                }
+            ],
+            "cough": [
+                {
+                    "text": "Descriptive text..."
+                }
+            ]
+        }
+    ]
+}

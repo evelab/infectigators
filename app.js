@@ -3,14 +3,28 @@ const startScreen = document.getElementById('startScreen');
 const gameArea = document.getElementById('gameArea');
 const lockScreen = document.getElementById('lockScreen');
 const folder = document.getElementById('folder');
-const folderTitle = document.getElementById('folderTitle');
 const folderImage = document.getElementById('folderImage');
+const folderTitle = document.getElementById('folderTitle');
+const folderText = document.getElementById('folderText');
 let blockCellInfo = false;
 const bugInfoBoard = document.getElementById('bugInfoBoard');
+//read and load text for instructions and popup folders with icon information from json file
+let data;
+async function fetchFolderText() {
+  const response = await fetch('./bugInfo.json');
+  data = await response.json();
+  return data;
+}
+fetchFolderText().then(data => {
+  data;
+  folderTitle.textContent = data['folderText'][0]['howto'][0]['title'];
+  folderText.innerHTML = data['folderText'][0]['howto'][0]['text'];
+});
 
 function instructionsDisplay() {
   lockScreen.style.display = 'flex';
-  folderTitle.textContent = 'How to play';
+  folderTitle.textContent = data['folderText'][0]['howto'][0]['title'];
+  folderText.innerHTML = data['folderText'][0]['howto'][0]['text'];
 }
 
 function closeFolder() {
@@ -267,8 +281,10 @@ function buildGame() {
 function showCellInfo(e) {
   if (blockCellInfo === false) {
     let clickedIcon = e.target;
-    folderTitle.textContent = clickedIcon.getAttribute('data-celltype');
+    let cellName = clickedIcon.getAttribute('data-celltype');
+    folderTitle.textContent = cellName;
     folderImage.src = clickedIcon.getAttribute('data-icon');
+    folderText.innerHTML = data['folderText'][0][cellName][0]['text'];
     lockScreen.style.display = 'flex';
   }
   // let cellText = e.target.children[0];
