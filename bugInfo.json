@@ -11,6 +11,9 @@
                 },
                 {
                     "text": "Pieces can move forward, or sideways if an adjacent square has a symbol that matches their current square. Pieces cannot move backwards."
+                },
+                {
+                    "text": "If a player encounters a piece of the other player, neither piece can move forward and may be blocked if they can't move sideways either. Within the 'Free' lane, a player can move their piece to any unoccupied square. Players can only land on the 'Home' square if it is unoccupied by the other player."
                 }
             ],
             "free": [

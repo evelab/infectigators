@@ -59,7 +59,6 @@ const grid = document.getElementById('grid');
 const rows = 5;
 const cols = 11;
 const cells = rows * cols;
-// const headers = ['', 'Vector', 'Transmission', 'Prevention', '', 'Symptoms', 'Treatment', 'Agent', ''];
 const headers = ['', 'Source', 'Spread', 'Prevent', '', 'Signs', 'Treat', 'Germ', ''];
 const homeCells = []; //index of 'home' cells (i.e. start and end cells)
 for (i = 0; i < rows; i++) {
@@ -82,12 +81,7 @@ function shuffle(array) {
   }
   return array;
 }
-//get a single array with unique cell types
-// const allCellTypes = [];
-// for (i = 0; i < rows; i++) {
-//   cellTypes[bugs[i]].map(e => allCellTypes.push(e));
-// }
-// const uniqueCellTypes = [...new Set(allCellTypes)];
+
 let occupiedCells = [...homeCells];
 let activeCells = [];
 const markers = [];
@@ -173,7 +167,6 @@ screen.orientation.addEventListener('change', function() {
     rotatePrompt.style.display = 'none';
     if (currentClientWidth === undefined) {
       //create game board and markers only if device is in landscape mode
-      // location.reload(); //reload page to get correct grid size
       startScreen.style.display = 'flex';
     } else {
       gameArea.style.display = 'flex';
@@ -206,16 +199,12 @@ function buildGame() {
     let cellType = cellTypes[bugs[j]][k];
     cell.setAttribute('data-celltype', cellType);
     if (homeCells.indexOf(i) > -1) {
-      // cell.textContent = '?';
-      // cell.className += ' cellHome';
       cell.style.backgroundColor = k === 0 ? 'rgb(243, 226, 214)' : 'rgb(204, 219, 228)';
     }
     else {
-      // cell.className += ' cellOther';
       let iconURL = 'assets/icons/' + bugs[j] + '/' + cellType + '.svg';
       cell.setAttribute('data-icon', iconURL);
       cell.style.backgroundImage = 'url("' + iconURL + '")';
-      // cellText.textContent = cellTypes[bugs[j]][k];
       cell.addEventListener('click', showCellInfo);
     }
     grid.appendChild(cell);
@@ -233,10 +222,8 @@ function buildGame() {
     header.className = 'headerText';
     let ht = headers[i];
     if (ht === 'Prevent' || ht === 'Signs') {
-      // header.style.width = cellWidth * 2 + 10 + 'px';
       header.style.width = cellWidth * 2 + 17 + 'px';
     } else {
-      // header.style.width = cellWidth + 'px';
       header.style.width = cellWidth + 3 + 'px';
     }
     header.textContent = ht;
@@ -244,7 +231,6 @@ function buildGame() {
   }
 
   //create markers
-  // let markerWidth = Math.round(((currentClientWidth - 110) / cols) / 2) + 'px';
   let markerWidth = Math.round((currentClientWidth - 140) / cols) + 'px';
   for (i = 0; i < totalMarkers; i++) {
     let token = document.createElement('div');
@@ -287,11 +273,6 @@ function showCellInfo(e) {
     folderText.innerHTML = data['folderText'][0][cellName][0]['text'];
     lockScreen.style.display = 'flex';
   }
-  // let cellText = e.target.children[0];
-  // cellText.style.display = 'flex';
-  // setTimeout(function() {
-  //   cellText.style.display = 'none';
-  // }, 1000)
 }
 
 //remove click events from all cells (when clicking on marker and after moving marker)
@@ -325,7 +306,6 @@ function removeMarkerClickEvent(firstMarker, lastMarker) {
     }
   }
 }
-
 
 //add click event to required cells when clicking on marker
 function clickMarker(e) {
@@ -474,19 +454,6 @@ function clickCell(e) {
         bugInfoBoard.style.backgroundImage = 'url("assets/other/' + bugs[activeRow] + '.svg")';
         bugInfoBoard.style.display = 'block';
         lockScreen.style.display = 'flex';
-      //check if clicked cell is an end cell and marker is not moving within start cells and...
-      // if (markers[z].endCells.indexOf(markers[z].currentCell) >= 0 && markers[z].endCells.indexOf(markers[z].prevCell) === -1) {
-        //reveal bug name
-        // activeRow = Number(clickedCell.getAttribute('data-rownumber'));
-        // for (i = 0; i < cols; i++) {
-        //   let cell = document.getElementById(i + (activeRow * cols));
-        //   cell.style.backgroundColor = 'rgb(220, 243, 239)';
-        //   cell.className += ' cellFlash';
-        //   if (i === 0 || i === cols - 1) {
-        //     cell.style.fontSize = '100%';
-        //     cell.textContent = bugs[activeRow];
-        //   }
-        // }
         //add marker to list of unmoveable markers in subsequent turns
         markersAtEnd.push(z);
         //add points
