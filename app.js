@@ -8,6 +8,7 @@ const folderTitle = document.getElementById('folderTitle');
 const folderText = document.getElementById('folderText');
 let blockCellInfo = false;
 const bugInfoBoard = document.getElementById('bugInfoBoard');
+const endScreen = document.getElementById('endGame');
 //read and load text for instructions and popup folders with icon information from json file
 let data;
 async function fetchFolderText() {
@@ -17,27 +18,7 @@ async function fetchFolderText() {
 }
 fetchFolderText().then(data => {
   data;
-  folderTitle.textContent = data['folderText'][0]['howto'][0]['title'];
-  folderText.innerHTML = data['folderText'][0]['howto'][0]['text'];
 });
-
-function instructionsDisplay() {
-  lockScreen.style.display = 'flex';
-  folderTitle.textContent = data['folderText'][0]['howto'][0]['title'];
-  folderText.innerHTML = data['folderText'][0]['howto'][0]['text'];
-}
-
-function closeFolder() {
-  lockScreen.style.display = 'none';
-  folderTitle.textContent = '';
-  folderImage.src = '';
-}
-
-function closeBugInfo() {
-  lockScreen.style.display = 'none';
-  bugInfoBoard.style.display = 'none';
-  folder.style.display = 'block';
-}
 
 const cellTypes = {
   'coronavirus': ['home', 'humans', 'droplets', 'mask', 'wash hands', 'free', 'fatigue', 'fever', 'rest', 'virus', 'home'],
@@ -111,6 +92,10 @@ const points = {
   p1: 0,
   p2: 0
 };
+const bugsFound = {
+  p1: [],
+  p2: []
+}
 
 //game stats
 const playerOne = document.getElementById('playerOne');
@@ -149,7 +134,7 @@ function playGame() {
   startScreen.style.display = 'none';
   gameArea.style.display = 'flex';
   buildGame();
-  lockScreen.style.display = 'flex';
+  instructionsDisplay();
 }
 
 function fullscreen() {
@@ -159,18 +144,18 @@ function fullscreen() {
 screen.orientation.addEventListener('change', function() {
   screenOrientation = screen.orientation.type.substring(0,9);
   if (screenOrientation !== 'landscape') {
-    startScreen.style.display = 'none';
-    lockScreen.style.display = 'none';
-    gameArea.style.display = 'none';
+    // startScreen.style.display = 'none';
+    // lockScreen.style.display = 'none';
+    // gameArea.style.display = 'none';
     rotatePrompt.style.display = 'flex';
   } else {
-    rotatePrompt.style.display = 'none';
     if (currentClientWidth === undefined) {
       //create game board and markers only if device is in landscape mode
       startScreen.style.display = 'flex';
     } else {
       gameArea.style.display = 'flex';
     }
+    rotatePrompt.style.display = 'none';
   }
 });
 
@@ -180,7 +165,6 @@ function buildGame() {
   let j = 0;
   let k = 0;
   currentClientWidth = grid.clientWidth;
-  // let cellWidth = Math.round((currentClientWidth - 110) / cols);
   let cellWidth = Math.round((currentClientWidth - 140) / cols);
   let cellWidthPx = cellWidth + 'px';
   for (i = 0; i < cells; i++) {
@@ -199,7 +183,7 @@ function buildGame() {
     let cellType = cellTypes[bugs[j]][k];
     cell.setAttribute('data-celltype', cellType);
     if (homeCells.indexOf(i) > -1) {
-      cell.style.backgroundColor = k === 0 ? 'rgb(243, 226, 214)' : 'rgb(204, 219, 228)';
+      cell.style.backgroundColor = k === 0 ? 'rgb(204, 219, 228)' : 'rgb(243, 226, 214)';
     }
     else {
       let iconURL = 'assets/icons/' + bugs[j] + '/' + cellType + '.svg';
@@ -238,7 +222,7 @@ function buildGame() {
     token.className = 'token';
     token.style.width = markerWidth;
     token.style.height = markerWidth;
-    let border = i < halfOfMarkers ? 'rgb(213, 94, 0)' : 'rgb(0, 114, 178)';
+    let border = i < halfOfMarkers ? 'rgb(0, 114, 178)' : 'rgb(213, 94, 0)';
     let start = i < halfOfMarkers ? homeCells.slice(0, rows) : homeCells.slice(rows, rows*2);
     let end = i < halfOfMarkers ? homeCells.slice(rows, rows*2) : homeCells.slice(0, rows);
     let useToken = i < halfOfMarkers ? 'token_01' : 'token_02';
@@ -262,6 +246,13 @@ function buildGame() {
   }
 }
 
+function instructionsDisplay() {
+  folderTitle.textContent = data['folderText'][0]['howto'][0]['title'];
+  folderImage.src = 'assets/icons/influenza/virus.svg';
+  folderText.innerHTML = data['folderText'][0]['howto'][0]['text'];
+  lockScreen.style.display = 'flex';
+}
+
 //show cell information when clicking cell
 //only if no active marker!
 function showCellInfo(e) {
@@ -273,6 +264,54 @@ function showCellInfo(e) {
     folderText.innerHTML = data['folderText'][0][cellName][0]['text'];
     lockScreen.style.display = 'flex';
   }
+}
+
+function closeFolder() {
+  lockScreen.style.display = 'none';
+  folderTitle.textContent = '';
+  folderImage.src = '';
+}
+
+function closeBugInfo() {
+  lockScreen.style.display = 'none';
+  bugInfoBoard.style.display = 'none';
+  folder.style.display = 'block';
+}
+
+function endOfGame() {
+  // removeMarkerClickEvent(0, totalMarkers);
+  let winner = activePlayer === 1 ? 'one' : 'two';
+  document.getElementById('winnerText').textContent = 'Player ' + winner + ' wins!';
+  for (i = 0; i < maxPoints; i++) {
+    let useBug = bugsFound['p' + activePlayer][i];
+    let bugIcon = document.createElement('div');
+    bugIcon.className = 'bugIcon';
+    bugIcon.style.backgroundImage = 'url("assets/icons/' + useBug + '.svg")';
+    bugIcon.addEventListener('click', function() { finalBugInfo(useBug) }, false);
+    let bugName = document.createElement('div');
+    bugName.className = 'bugName';
+    bugName.textContent = useBug;
+    document.getElementById('endGameIcons').appendChild(bugIcon);
+    document.getElementById('endGameBugNames').appendChild(bugName);
+  }
+  bugInfoBoard.style.display = 'none';
+  endScreen.style.display = 'flex';
+}
+
+function finalBugInfo(a) {
+  bugInfoBoard.style.backgroundImage = 'url("assets/other/' + a + '.svg")';
+  endScreen.style.display = 'none';
+  document.getElementById('closeButton2').onclick = backToEndGame;
+  bugInfoBoard.style.display = 'block';
+}
+
+function backToEndGame() {
+  bugInfoBoard.style.display = 'none';
+  endScreen.style.display = 'flex';
+}
+
+function restartGame() {
+  location.reload(); //reload page
 }
 
 //remove click events from all cells (when clicking on marker and after moving marker)
@@ -459,9 +498,11 @@ function clickCell(e) {
         //add points
         updatedPoints = ++points['p' + activePlayer];
         document.getElementById('p' + activePlayer + 'Points').textContent = updatedPoints;
+        //add bug to list of bugs found by player
+        bugsFound['p' + activePlayer].push(bugs[activeRow]);
         //check if points = maxPoints and end game
         if (updatedPoints === maxPoints) {
-          removeMarkerClickEvent(0, totalMarkers);
+          document.getElementById('closeButton2').onclick = endOfGame;
           return;
         }
       }

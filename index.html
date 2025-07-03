@@ -61,16 +61,24 @@
 
     <div id='lockScreen'>
       <div id='folder'>
-        <button id='closeButton' class='button' onclick='closeFolder()'></button>
-        <img id='folderImage' src='assets/icons/influenza/virus.svg' alt='Infectigators'/>
+        <button id='closeButton1' class='button closeButton' onclick='closeFolder()'></button>
+        <img id='folderImage' src='' alt='Infectigators'/>
         <div class='folderContent'>
-          <p id='folderTitle' class='h1'>How to play</p>
+          <p id='folderTitle' class='h1'></p>
           <hr>
           <p id='folderText'></p>
         </div>
       </div>
       <div id='bugInfoBoard'>
-        <button id='closeButton2' class='button' onclick='closeBugInfo()'></button>
+        <button id='closeButton2' class='button closeButton' onclick='closeBugInfo()'></button>
+      </div>
+      <div id='endGame'>
+        <button id='closeButton3' class='button closeButton' onclick='restartGame()'></button>
+        <p id='winnerText' class='h1'></p>
+        <hr>
+        <p>You identified 3 illnesses first. Click one of the germs below to learn more, or close to play again.</p>
+        <div id='endGameIcons'></div>
+        <div id='endGameBugNames'></div>
       </div>
     </div>
 

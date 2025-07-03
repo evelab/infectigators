@@ -1,7 +1,37 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 345.893 204.918">
-  <defs>
-    <style>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   id="Layer_1"
+   data-name="Layer 1"
+   viewBox="0 0 345.893 204.918"
+   version="1.1"
+   sodipodi:docname="folder.svg"
+   inkscape:version="1.4.2 (1:1.4.2+202505120737+ebf0e940d0)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview5"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="3.5444487"
+     inkscape:cx="172.9465"
+     inkscape:cy="102.41367"
+     inkscape:window-width="1920"
+     inkscape:window-height="1009"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="Layer_1" />
+  <defs
+     id="defs1">
+    <style
+       id="style1">
       .cls-1 {
         fill: none;
       }
@@ -27,13 +57,34 @@
       }
     </style>
   </defs>
-  <path class="cls-2" d="M342.621,2.169h-102.608c-5.916,0-10.711,4.796-10.711,10.711v8.063l-226.772.069v180.686l340.088-.104v-98.01h.003V2.169Z"/>
-  <polygon class="cls-4" points="322.214 191.503 20.75 191.528 23.641 18.595 325.038 22.585 322.214 191.503"/>
-  <rect class="cls-6" x="81.544" y="-38.495" width="170.178" height="297.913" transform="translate(55.675 276.764) rotate(-89.829)"/>
-  <g>
-    <rect class="cls-3" x="329.521" y="7.129" width="2.893" height="12.476" transform="translate(87.486 237.944) rotate(-45)"/>
-    <rect class="cls-3" x="329.521" y="6.615" width="2.893" height="12.476" transform="translate(555.908 255.971) rotate(-135)"/>
-  </g>
-  <rect class="cls-5" x="196.283" y="36.943" width="106.917" height="106.917"/>
-  <rect class="cls-1" x="200.207" y="40.868" width="99.069" height="99.069"/>
+  <path
+     class="cls-2"
+     d="M342.621,2.169h-102.608c-5.916,0-10.711,4.796-10.711,10.711v8.063l-226.772.069v180.686l340.088-.104v-98.01h.003V2.169Z"
+     id="path1" />
+  <polygon
+     class="cls-4"
+     points="322.214 191.503 20.75 191.528 23.641 18.595 325.038 22.585 322.214 191.503"
+     id="polygon1" />
+  <rect
+     class="cls-6"
+     x="81.544"
+     y="-38.495"
+     width="170.178"
+     height="297.913"
+     transform="translate(55.675 276.764) rotate(-89.829)"
+     id="rect1" />
+  <rect
+     class="cls-5"
+     x="196.283"
+     y="36.943"
+     width="106.917"
+     height="106.917"
+     id="rect4" />
+  <rect
+     class="cls-1"
+     x="200.207"
+     y="40.868"
+     width="99.069"
+     height="99.069"
+     id="rect5" />
 </svg>
